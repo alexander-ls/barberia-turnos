@@ -4,23 +4,50 @@ import { collection, addDoc } from 'firebase/firestore';
 
 export default function TurnoForm() {
   const [nombre, setNombre] = useState('');
+  const [fecha, setFecha] = useState('');
+  const [servicio, setServicio] = useState('');
+  const [barbero, setBarbero] = useState('');
 
   const guardarTurno = async () => {
-    if (!nombre) return;
+    if (!nombre || !fecha || !servicio || !barbero) return;
     await addDoc(collection(db, 'turnos'), {
       nombre,
-      timestamp: new Date()
+      fecha,
+      servicio,
+      barbero,
+      timestamp: new Date(),
     });
     setNombre('');
+    setFecha('');
+    setServicio('');
+    setBarbero('');
   };
 
   return (
-    <div className="flex items-center space-x-2 mb-4">
+    <div className="flex flex-col space-y-2 mb-4">
       <input
-        className="border p-2 rounded flex-grow"
+        className="border p-2 rounded"
         value={nombre}
         onChange={(e) => setNombre(e.target.value)}
         placeholder="Nombre del cliente"
+      />
+      <input
+        type="date"
+        className="border p-2 rounded"
+        value={fecha}
+        onChange={(e) => setFecha(e.target.value)}
+      />
+      <input
+        className="border p-2 rounded"
+        value={servicio}
+        onChange={(e) => setServicio(e.target.value)}
+        placeholder="Servicio"
+      />
+      <input
+        className="border p-2 rounded"
+        value={barbero}
+        onChange={(e) => setBarbero(e.target.value)}
+        placeholder="Nombre del barbero"
       />
       <button
         onClick={guardarTurno}

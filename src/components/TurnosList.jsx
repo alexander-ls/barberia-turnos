@@ -30,6 +30,7 @@ export default function TurnosList() {
             </button>
           </div>
           <p className="text-sm text-gray-700">Fecha: {turno.fecha}</p>
+          <p className="text-sm text-gray-700">Hora: {turno.hora}</p>
           <p className="text-sm text-gray-700">Servicio: {turno.servicio}</p>
           <p className="text-sm text-gray-700">Barbero: {turno.barbero}</p>
         </li>

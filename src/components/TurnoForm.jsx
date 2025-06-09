@@ -5,20 +5,23 @@ import { collection, addDoc } from 'firebase/firestore';
 export default function TurnoForm() {
   const [nombre, setNombre] = useState('');
   const [fecha, setFecha] = useState('');
+  const [hora, setHora] = useState('');
   const [servicio, setServicio] = useState('');
   const [barbero, setBarbero] = useState('');
 
   const guardarTurno = async () => {
-    if (!nombre || !fecha || !servicio || !barbero) return;
+    if (!nombre || !fecha || !hora || !servicio || !barbero) return;
     await addDoc(collection(db, 'turnos'), {
       nombre,
       fecha,
+      hora,
       servicio,
       barbero,
       timestamp: new Date(),
     });
     setNombre('');
     setFecha('');
+    setHora('');
     setServicio('');
     setBarbero('');
   };
@@ -36,6 +39,12 @@ export default function TurnoForm() {
         className="border p-2 rounded"
         value={fecha}
         onChange={(e) => setFecha(e.target.value)}
+      />
+      <input
+        type="time"
+        className="border p-2 rounded"
+        value={hora}
+        onChange={(e) => setHora(e.target.value)}
       />
       <input
         className="border p-2 rounded"

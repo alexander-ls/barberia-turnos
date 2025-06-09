@@ -3,8 +3,8 @@ import TurnosList from '../components/TurnosList';
 
 export default function Dashboard() {
   return (
-    <div>
-      <h2>Dashboard de Turnos</h2>
+    <div className="p-4">
+      <h2 className="text-xl font-semibold mb-4">Dashboard de Turnos</h2>
       <TurnoForm />
       <TurnosList />
     </div>

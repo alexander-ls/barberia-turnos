@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { db } from '../auth/FirebaseConfig';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, onSnapshot } from 'firebase/firestore';
 
 export default function TurnoForm() {
   const [nombre, setNombre] = useState('');
@@ -8,6 +8,14 @@ export default function TurnoForm() {
   const [hora, setHora] = useState('');
   const [servicio, setServicio] = useState('');
   const [barbero, setBarbero] = useState('');
+  const [servicios, setServicios] = useState([]);
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, 'servicios'), (snapshot) => {
+      setServicios(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+    });
+    return () => unsubscribe();
+  }, []);
 
   const guardarTurno = async () => {
     if (!nombre || !fecha || !hora || !servicio || !barbero) return;
@@ -46,12 +54,18 @@ export default function TurnoForm() {
         value={hora}
         onChange={(e) => setHora(e.target.value)}
       />
-      <input
+      <select
         className="border p-2 rounded"
         value={servicio}
         onChange={(e) => setServicio(e.target.value)}
-        placeholder="Servicio"
-      />
+      >
+        <option value="">Seleccione un servicio</option>
+        {servicios.map((s) => (
+          <option key={s.id} value={s.nombre}>
+            {s.nombre}
+          </option>
+        ))}
+      </select>
       <input
         className="border p-2 rounded"
         value={barbero}

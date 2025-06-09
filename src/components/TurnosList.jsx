@@ -17,10 +17,16 @@ export default function TurnosList() {
   };
 
   return (
-    <ul>
+    <ul className="space-y-2">
       {turnos.map((turno) => (
-        <li key={turno.id}>
-          {turno.nombre} - <button onClick={() => eliminarTurno(turno.id)}>Eliminar</button>
+        <li key={turno.id} className="flex items-center justify-between p-2 border rounded">
+          <span>{turno.nombre}</span>
+          <button
+            onClick={() => eliminarTurno(turno.id)}
+            className="text-red-600 hover:underline"
+          >
+            Eliminar
+          </button>
         </li>
       ))}
     </ul>

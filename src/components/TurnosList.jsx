@@ -19,12 +19,12 @@ export default function TurnosList() {
   return (
     <ul className="space-y-2">
       {turnos.map((turno) => (
-        <li key={turno.id} className="p-2 border rounded">
-          <div className="flex justify-between">
+        <li key={turno.id} className="p-4 bg-base-200 rounded">
+          <div className="flex justify-between items-center">
             <span className="font-semibold">{turno.nombre}</span>
             <button
               onClick={() => eliminarTurno(turno.id)}
-              className="text-red-600 hover:underline"
+              className="btn btn-sm btn-outline btn-error"
             >
               Eliminar
             </button>

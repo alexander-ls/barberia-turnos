@@ -29,38 +29,38 @@ export default function TurnoForm() {
   return (
     <div className="flex flex-col space-y-2 mb-4">
       <input
-        className="border p-2 rounded"
+        className="input input-bordered"
         value={nombre}
         onChange={(e) => setNombre(e.target.value)}
         placeholder="Nombre del cliente"
       />
       <input
         type="date"
-        className="border p-2 rounded"
+        className="input input-bordered"
         value={fecha}
         onChange={(e) => setFecha(e.target.value)}
       />
       <input
         type="time"
-        className="border p-2 rounded"
+        className="input input-bordered"
         value={hora}
         onChange={(e) => setHora(e.target.value)}
       />
       <input
-        className="border p-2 rounded"
+        className="input input-bordered"
         value={servicio}
         onChange={(e) => setServicio(e.target.value)}
         placeholder="Servicio"
       />
       <input
-        className="border p-2 rounded"
+        className="input input-bordered"
         value={barbero}
         onChange={(e) => setBarbero(e.target.value)}
         placeholder="Nombre del barbero"
       />
       <button
         onClick={guardarTurno}
-        className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+        className="btn btn-success"
       >
         Guardar turno
       </button>

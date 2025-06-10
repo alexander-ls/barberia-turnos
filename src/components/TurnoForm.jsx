@@ -9,12 +9,19 @@ export default function TurnoForm() {
   const [servicio, setServicio] = useState('');
   const [barbero, setBarbero] = useState('');
   const [servicios, setServicios] = useState([]);
+  const [barberos, setBarberos] = useState([]);
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, 'servicios'), (snapshot) => {
+    const unsubServicios = onSnapshot(collection(db, 'servicios'), (snapshot) => {
       setServicios(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
     });
-    return () => unsubscribe();
+    const unsubBarberos = onSnapshot(collection(db, 'barberos'), (snapshot) => {
+      setBarberos(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+    });
+    return () => {
+      unsubServicios();
+      unsubBarberos();
+    };
   }, []);
 
   const guardarTurno = async () => {
@@ -66,12 +73,18 @@ export default function TurnoForm() {
           </option>
         ))}
       </select>
-      <input
+      <select
         className="border p-2 rounded"
         value={barbero}
         onChange={(e) => setBarbero(e.target.value)}
-        placeholder="Nombre del barbero"
-      />
+      >
+        <option value="">Seleccione un barbero</option>
+        {barberos.map((b) => (
+          <option key={b.id} value={b.nombre}>
+            {b.nombre}
+          </option>
+        ))}
+      </select>
       <button
         onClick={guardarTurno}
         className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"

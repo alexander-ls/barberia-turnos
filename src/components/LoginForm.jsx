@@ -3,7 +3,7 @@ import { auth } from '../auth/FirebaseConfig';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
-const ADMIN_EMAILS = ['admin@example.com'];
+const ADMIN_EMAILS = ['super@hotmail.com'];
 
 export default function LoginForm() {
   const [email, setEmail] = useState('');

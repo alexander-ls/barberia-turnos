@@ -15,7 +15,7 @@ export default function LoginForm() {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      let destination = '/dashboard';
+      let destination = '/';
       if (ADMIN_EMAILS.includes(email.toLowerCase())) {
         destination = '/admin';
       } else {

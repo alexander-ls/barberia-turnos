@@ -1,5 +1,5 @@
 import LoginForm from '../components/LoginForm';
-import logo from '../assets/barber.png';
+import logo from '../assets/barber.svg';
 
 export default function Home() {
   return (

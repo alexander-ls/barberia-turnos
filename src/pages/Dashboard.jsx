@@ -11,6 +11,12 @@ export default function Dashboard() {
       >
         Gestionar servicios
       </a>
+      <a
+        href="#/barberos"
+        className="text-blue-600 hover:underline block mb-4"
+      >
+        Gestionar barberos
+      </a>
       <div className="grid gap-6 md:grid-cols-2">
         <TurnoForm />
         <TurnosList />

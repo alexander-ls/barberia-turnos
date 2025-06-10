@@ -1,15 +1,36 @@
 import { useEffect, useState } from 'react';
-import { db } from '../auth/FirebaseConfig';
-import { collection, onSnapshot, deleteDoc, doc } from 'firebase/firestore';
+import { auth, db } from '../auth/FirebaseConfig';
+import {
+  collection,
+  onSnapshot,
+  deleteDoc,
+  doc,
+  query,
+  where,
+} from 'firebase/firestore';
+import { onAuthStateChanged } from 'firebase/auth';
 
 export default function TurnosList() {
   const [turnos, setTurnos] = useState([]);
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, 'turnos'), (snapshot) => {
-      setTurnos(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+    let unsubscribeTurnos;
+    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const q = query(collection(db, 'turnos'), where('userId', '==', user.uid));
+        unsubscribeTurnos = onSnapshot(q, (snapshot) => {
+          setTurnos(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+        });
+      } else {
+        setTurnos([]);
+        if (unsubscribeTurnos) unsubscribeTurnos();
+      }
     });
-    return () => unsubscribe();
+
+    return () => {
+      if (unsubscribeTurnos) unsubscribeTurnos();
+      unsubscribeAuth();
+    };
   }, []);
 
   const eliminarTurno = async (id) => {

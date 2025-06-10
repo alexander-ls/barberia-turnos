@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { db } from '../auth/FirebaseConfig';
+import { auth, db } from '../auth/FirebaseConfig';
 import { collection, addDoc, onSnapshot } from 'firebase/firestore';
 
 export default function TurnoForm() {
@@ -26,12 +26,14 @@ export default function TurnoForm() {
 
   const guardarTurno = async () => {
     if (!nombre || !fecha || !hora || !servicio || !barbero) return;
+    const userId = auth.currentUser ? auth.currentUser.uid : null;
     await addDoc(collection(db, 'turnos'), {
       nombre,
       fecha,
       hora,
       servicio,
       barbero,
+      userId,
       timestamp: new Date(),
     });
     setNombre('');

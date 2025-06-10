@@ -20,7 +20,10 @@ export default function BarberList() {
     <ul className="space-y-2">
       {barberos.map((barbero) => (
         <li key={barbero.id} className="p-2 border rounded flex justify-between">
-          <span>{barbero.nombre}</span>
+          <span>
+            {barbero.nombre}
+            {barbero.email ? ` - ${barbero.email}` : ''}
+          </span>
           <button
             onClick={() => eliminarBarbero(barbero.id)}
             className="text-red-600 hover:underline"

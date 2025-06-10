@@ -2,7 +2,7 @@ import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: "AIzaSyDNDrRYhZ8Z5rCeSg7wC8grJUCiudY2wN0",
   authDomain: "barberia-turnos-65776.firebaseapp.com",
   projectId: "barberia-turnos-65776",

@@ -12,6 +12,9 @@ export default function Home() {
             <LoginForm />
           </div>
         </div>
+        <a href="#/agendar" className="text-blue-600 hover:underline mt-4">
+          Agendar un turno sin registrarse
+        </a>
       </div>
     </div>
   );

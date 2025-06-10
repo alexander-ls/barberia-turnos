@@ -1,17 +1,31 @@
 import { useState } from 'react';
-import { db } from '../auth/FirebaseConfig';
+import { db, firebaseConfig } from '../auth/FirebaseConfig';
 import { collection, addDoc } from 'firebase/firestore';
+import { initializeApp } from 'firebase/app';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 
 export default function BarberForm() {
   const [nombre, setNombre] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const guardarBarbero = async () => {
-    if (!nombre) return;
+    if (!nombre || !email || !password) return;
+
+    // crear usuario sin afectar la sesión actual
+    const auxApp = initializeApp(firebaseConfig, 'aux');
+    const auxAuth = getAuth(auxApp);
+    await createUserWithEmailAndPassword(auxAuth, email, password);
+
     await addDoc(collection(db, 'barberos'), {
       nombre,
+      email,
       timestamp: new Date(),
     });
+
     setNombre('');
+    setEmail('');
+    setPassword('');
   };
 
   return (
@@ -21,6 +35,20 @@ export default function BarberForm() {
         value={nombre}
         onChange={(e) => setNombre(e.target.value)}
         placeholder="Nombre del barbero"
+      />
+      <input
+        className="border p-2 rounded"
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Correo electrónico"
+      />
+      <input
+        className="border p-2 rounded"
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        placeholder="Contraseña"
       />
       <button
         onClick={guardarBarbero}

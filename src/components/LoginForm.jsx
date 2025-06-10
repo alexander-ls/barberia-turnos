@@ -1,5 +1,6 @@
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../auth/FirebaseConfig';
+import { auth, db } from '../auth/FirebaseConfig';
+import { collection, query, where, getDocs } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
@@ -14,9 +15,14 @@ export default function LoginForm() {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      const destination = ADMIN_EMAILS.includes(email.toLowerCase())
-        ? '/admin'
-        : '/dashboard';
+      let destination = '/dashboard';
+      if (ADMIN_EMAILS.includes(email.toLowerCase())) {
+        destination = '/admin';
+      } else {
+        const q = query(collection(db, 'barberos'), where('email', '==', email));
+        const snap = await getDocs(q);
+        if (!snap.empty) destination = '/barbero';
+      }
       navigate(destination);
     } catch (error) {
       alert('Error de autenticación');

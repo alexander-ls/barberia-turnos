@@ -19,25 +19,22 @@ export default function LoginForm() {
   };
 
   return (
-    <form onSubmit={handleLogin} className="flex flex-col space-y-2 max-w-sm mx-auto">
+    <form onSubmit={handleLogin} className="flex flex-col space-y-4">
       <input
-        className="border p-2 rounded"
+        className="input input-bordered w-full"
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Email"
       />
       <input
-        className="border p-2 rounded"
+        className="input input-bordered w-full"
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         placeholder="Contraseña"
       />
-      <button
-        type="submit"
-        className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-      >
+      <button type="submit" className="btn btn-primary">
         Ingresar
       </button>
     </form>

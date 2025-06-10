@@ -3,6 +3,8 @@ import { auth } from '../auth/FirebaseConfig';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
+const ADMIN_EMAILS = ['super@hotmail.com'];
+
 export default function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -12,7 +14,10 @@ export default function LoginForm() {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigate('/dashboard');
+      const destination = ADMIN_EMAILS.includes(email.toLowerCase())
+        ? '/admin'
+        : '/dashboard';
+      navigate(destination);
     } catch (error) {
       alert('Error de autenticación');
     }

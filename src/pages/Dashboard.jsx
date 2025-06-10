@@ -3,7 +3,7 @@ import TurnosList from '../components/TurnosList';
 
 export default function Dashboard() {
   return (
-    <div className="p-4">
+    <div className="container mx-auto p-4">
       <h2 className="text-xl font-semibold mb-4">Dashboard de Turnos</h2>
       <a
         href="#/servicios"
@@ -11,8 +11,10 @@ export default function Dashboard() {
       >
         Gestionar servicios
       </a>
-      <TurnoForm />
-      <TurnosList />
+      <div className="grid gap-6 md:grid-cols-2">
+        <TurnoForm />
+        <TurnosList />
+      </div>
     </div>
   );
 }

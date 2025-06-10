@@ -17,24 +17,26 @@ export default function TurnosList() {
   };
 
   return (
-    <ul className="space-y-2">
+    <div className="grid gap-4">
       {turnos.map((turno) => (
-        <li key={turno.id} className="p-2 border rounded">
-          <div className="flex justify-between">
-            <span className="font-semibold">{turno.nombre}</span>
-            <button
-              onClick={() => eliminarTurno(turno.id)}
-              className="text-red-600 hover:underline"
-            >
-              Eliminar
-            </button>
+        <div key={turno.id} className="card bg-base-100 shadow-md">
+          <div className="card-body">
+            <div className="flex justify-between items-start">
+              <h2 className="card-title">{turno.nombre}</h2>
+              <button
+                onClick={() => eliminarTurno(turno.id)}
+                className="btn btn-sm btn-error"
+              >
+                Eliminar
+              </button>
+            </div>
+            <p>Fecha: {turno.fecha}</p>
+            <p>Hora: {turno.hora}</p>
+            <p>Servicio: {turno.servicio}</p>
+            <p>Barbero: {turno.barbero}</p>
           </div>
-          <p className="text-sm text-gray-700">Fecha: {turno.fecha}</p>
-          <p className="text-sm text-gray-700">Hora: {turno.hora}</p>
-          <p className="text-sm text-gray-700">Servicio: {turno.servicio}</p>
-          <p className="text-sm text-gray-700">Barbero: {turno.barbero}</p>
-        </li>
+        </div>
       ))}
-    </ul>
+    </div>
   );
 }

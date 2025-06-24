@@ -40,26 +40,36 @@ export default function Landing() {
           </div>
         </div>
       </section>
-      <section className="p-4">
-        <h2 className="text-3xl font-bold text-center mb-6">Servicios</h2>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {servicios.map(s => (
-            <div key={s.id} className="p-4 border rounded shadow">
-              <h3 className="font-semibold">{s.nombre}</h3>
-              {s.precio && (
-                <p className="text-gray-600">${s.precio}</p>
-              )}
-            </div>
-          ))}
+      <section id="servicios" class="py-16 px-6 max-w-6xl mx-auto">
+        <h2 class="text-3xl font-bold mb-10 text-center">Nuestros Servicios</h2>
+        <div class="grid md:grid-cols-2 gap-8">
+          <ul class="text-lg space-y-4">
+            {servicios.map(s => (
+              <li class="flex justify-between border-b pb-2">
+                <span>{s.nombre}</span>
+                {s.precio && (
+                  <span>${s.precio}</span>
+                )}
+              </li>
+            ))}
+          </ul>
+          <img src="https://joseppons.com/formacion/wp-content/uploads/2021/05/estudiar-barberia.jpg" alt="Fade" class="rounded-lg shadow" />
         </div>
       </section>
-      <section className="p-4 bg-base-200">
-        <h2 className="text-3xl font-bold text-center mb-6">Nuestros Barberos</h2>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {barberos.map(b => (
-            <div key={b.id} className="p-4 border rounded shadow">
-              <h3 className="font-semibold">{b.nombre}</h3>
-              {b.email && <p className="text-gray-600">{b.email}</p>}
+
+
+      <section class="bg-gray-100 py-16 px-6">
+        <h2 class="text-3xl font-bold mb-10 text-center">Conoce a Nuestros Barberos</h2>
+        <div class="flex flex-wrap justify-center gap-8">
+
+        {barberos.map(b => (
+            <div key={b.id} className="text-center">
+              <div class="avatar">
+              <div class="w-24 rounded-full">
+                <img src="https://img.daisyui.com/images/profile/demo/yellingcat@192.webp" />
+              </div>
+            </div>
+            <p class="font-medium">{b.nombre}</p>
             </div>
           ))}
         </div>

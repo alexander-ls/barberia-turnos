@@ -17,7 +17,8 @@ export default function TurnoForm() {
   const [servicios, setServicios] = useState([]);
   const [horasDisponibles, setHorasDisponibles] = useState([]);
   const [barberosDisponibles, setBarberosDisponibles] = useState([]);
-  const [horasOcupadas, setHorasOcupadas] = useState([]);
+  const [slotsPorHora, setSlotsPorHora] = useState({});
+  const [turnosPorHora, setTurnosPorHora] = useState({});
   const [barberosOcupados, setBarberosOcupados] = useState([]);
 
   useEffect(() => {
@@ -31,12 +32,17 @@ export default function TurnoForm() {
     if (fecha) {
       const q = query(collection(db, 'turnos'), where('fecha', '==', fecha));
       const unsub = onSnapshot(q, snap => {
-        setHorasOcupadas(snap.docs.map(d => d.data().hora));
+        const byHour = {};
+        snap.forEach(d => {
+          const { hora, barbero: b } = d.data();
+          if (!byHour[hora]) byHour[hora] = [];
+          byHour[hora].push(b);
+        });
+        setTurnosPorHora(byHour);
       });
       return () => unsub();
-    } else {
-      setHorasOcupadas([]);
     }
+    setTurnosPorHora({});
   }, [fecha]);
 
   useEffect(() => {
@@ -47,15 +53,28 @@ export default function TurnoForm() {
         where('fecha', '==', fecha)
       );
       const unsub = onSnapshot(q, snap => {
-        const horas = [...new Set(snap.docs.map(d => d.data().hora))];
-        const disponibles = horas.filter(h => !horasOcupadas.includes(h));
-        setHorasDisponibles(disponibles);
+        const byHour = {};
+        snap.forEach(d => {
+          const { hora: h, barbero: b } = d.data();
+          if (!byHour[h]) byHour[h] = [];
+          byHour[h].push(b);
+        });
+        setSlotsPorHora(byHour);
       });
       return () => unsub();
-    } else {
-      setHorasDisponibles([]);
     }
-  }, [servicio, fecha, horasOcupadas]);
+    setSlotsPorHora({});
+  }, [servicio, fecha]);
+
+  useEffect(() => {
+    const horas = Object.keys(slotsPorHora);
+    const disponibles = horas.filter(h => {
+      const booked = turnosPorHora[h] || [];
+      const libres = slotsPorHora[h].filter(b => !booked.includes(b));
+      return libres.length > 0;
+    });
+    setHorasDisponibles(disponibles);
+  }, [slotsPorHora, turnosPorHora]);
 
   useEffect(() => {
     if (fecha && hora) {

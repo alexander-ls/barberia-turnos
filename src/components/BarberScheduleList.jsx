@@ -5,9 +5,11 @@ import { onAuthStateChanged } from 'firebase/auth';
 
 export default function BarberScheduleList() {
   const [slots, setSlots] = useState([]);
+  const [bookings, setBookings] = useState([]);
 
   useEffect(() => {
     let unsubSlots;
+    let unsubTurnos;
     let unsubBarbero;
     const unsubAuth = onAuthStateChanged(auth, user => {
       if (user) {
@@ -19,6 +21,10 @@ export default function BarberScheduleList() {
             unsubSlots = onSnapshot(q, s => {
               setSlots(s.docs.map(d => ({ id: d.id, ...d.data() })));
             });
+            const qt = query(collection(db, 'turnos'), where('barbero', '==', nombre));
+            unsubTurnos = onSnapshot(qt, t => {
+              setBookings(t.docs.map(d => ({ id: d.id, ...d.data() })));
+            });
           } else {
             setSlots([]);
           }
@@ -29,6 +35,7 @@ export default function BarberScheduleList() {
     });
     return () => {
       if (unsubSlots) unsubSlots();
+      if (unsubTurnos) unsubTurnos();
       if (unsubBarbero) unsubBarbero();
       unsubAuth();
     };
@@ -40,19 +47,23 @@ export default function BarberScheduleList() {
 
   return (
     <div className="grid gap-4">
-      {slots.map(s => (
-        <div key={s.id} className="card bg-base-100 shadow-md p-4">
-          <div className="flex justify-between items-start">
-            <p className="font-semibold">
-              {s.fecha} {s.hora}
-            </p>
-            <button onClick={() => eliminar(s.id)} className="btn btn-xs btn-error">
-              Eliminar
-            </button>
+      {slots.map(s => {
+        const agendado = bookings.some(b => b.fecha === s.fecha && b.hora === s.hora);
+        return (
+          <div key={s.id} className="card bg-base-100 shadow-md p-4">
+            <div className="flex justify-between items-start">
+              <p className="font-semibold">
+                {s.fecha} {s.hora}
+              </p>
+              <button onClick={() => eliminar(s.id)} className="btn btn-xs btn-error">
+                Eliminar
+              </button>
+            </div>
+            <p>{s.servicio}</p>
+            {agendado && <span className="badge badge-success mt-2">Agendado</span>}
           </div>
-          <p>{s.servicio}</p>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }

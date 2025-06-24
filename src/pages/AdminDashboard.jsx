@@ -1,5 +1,7 @@
 import TurnoForm from '../components/TurnoForm';
 import AllTurnosList from '../components/AllTurnosList';
+import BarberTurnos from '../components/BarberTurnos';
+import AllBarberSchedules from '../components/AllBarberSchedules';
 
 export default function AdminDashboard() {
   return (
@@ -21,6 +23,10 @@ export default function AdminDashboard() {
         <TurnoForm />
         <AllTurnosList />
       </div>
+      <h2 className="text-xl font-semibold mb-4 mt-8">Turnos por barbero</h2>
+      <BarberTurnos />
+      <h2 className="text-xl font-semibold mb-4 mt-8">Horarios cargados</h2>
+      <AllBarberSchedules />
     </div>
   );
 }

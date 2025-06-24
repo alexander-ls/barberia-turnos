@@ -11,24 +11,26 @@ export default function BarberDashboard() {
         <UserMenu />
       </div>
 
-      <div className="card bg-base-100 shadow">
-        <div className="card-body">
-          <h3 className="card-title">Cargar horarios disponibles</h3>
-          <BarberScheduleForm />
+      <div className="grid gap-6 md:grid-cols-2">
+        <div className="card bg-base-100 shadow">
+          <div className="card-body">
+            <h3 className="card-title">Cargar horarios disponibles</h3>
+            <BarberScheduleForm />
+          </div>
         </div>
-      </div>
 
-      <div className="card bg-base-100 shadow">
-        <div className="card-body">
-          <h3 className="card-title">Horarios cargados</h3>
-          <BarberScheduleList />
+        <div className="card bg-base-100 shadow">
+          <div className="card-body">
+            <h3 className="card-title">Horarios cargados</h3>
+            <BarberScheduleList />
+          </div>
         </div>
-      </div>
 
-      <div className="card bg-base-100 shadow">
-        <div className="card-body">
-          <h3 className="card-title">Mis turnos asignados</h3>
-          <BarberMisTurnos />
+        <div className="card bg-base-100 shadow md:col-span-2">
+          <div className="card-body">
+            <h3 className="card-title">Mis turnos asignados</h3>
+            <BarberMisTurnos />
+          </div>
         </div>
       </div>
     </div>

@@ -135,6 +135,11 @@ export default function TurnoForm() {
 
   return (
     <div className="flex flex-col space-y-2 mb-4">
+      {servicio && fecha && horasDisponibles.length === 0 && (
+        <div role="alert" className="alert alert-warning">
+          <span>Sin turnos disponibles para ese día</span>
+        </div>
+      )}
    
       <select className="border p-2 rounded" value={servicio} onChange={e => setServicio(e.target.value)}>
         <option value="">Seleccione un servicio</option>

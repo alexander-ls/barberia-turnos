@@ -1,6 +1,12 @@
 import { useState, useEffect } from 'react';
 import { auth, db } from '../auth/FirebaseConfig';
-import { collection, addDoc, onSnapshot, query, where } from 'firebase/firestore';
+import {
+  collection,
+  addDoc,
+  onSnapshot,
+  query,
+  where,
+} from 'firebase/firestore';
 
 export default function TurnoForm() {
   const [servicio, setServicio] = useState('');
@@ -11,6 +17,8 @@ export default function TurnoForm() {
   const [servicios, setServicios] = useState([]);
   const [horasDisponibles, setHorasDisponibles] = useState([]);
   const [barberosDisponibles, setBarberosDisponibles] = useState([]);
+  const [horasOcupadas, setHorasOcupadas] = useState([]);
+  const [barberosOcupados, setBarberosOcupados] = useState([]);
 
   useEffect(() => {
     const unsubServicios = onSnapshot(collection(db, 'servicios'), snap => {
@@ -18,6 +26,18 @@ export default function TurnoForm() {
     });
     return () => unsubServicios();
   }, []);
+
+  useEffect(() => {
+    if (fecha) {
+      const q = query(collection(db, 'turnos'), where('fecha', '==', fecha));
+      const unsub = onSnapshot(q, snap => {
+        setHorasOcupadas(snap.docs.map(d => d.data().hora));
+      });
+      return () => unsub();
+    } else {
+      setHorasOcupadas([]);
+    }
+  }, [fecha]);
 
   useEffect(() => {
     if (servicio && fecha) {
@@ -28,13 +48,30 @@ export default function TurnoForm() {
       );
       const unsub = onSnapshot(q, snap => {
         const horas = [...new Set(snap.docs.map(d => d.data().hora))];
-        setHorasDisponibles(horas);
+        const disponibles = horas.filter(h => !horasOcupadas.includes(h));
+        setHorasDisponibles(disponibles);
       });
       return () => unsub();
     } else {
       setHorasDisponibles([]);
     }
-  }, [servicio, fecha]);
+  }, [servicio, fecha, horasOcupadas]);
+
+  useEffect(() => {
+    if (fecha && hora) {
+      const q = query(
+        collection(db, 'turnos'),
+        where('fecha', '==', fecha),
+        where('hora', '==', hora)
+      );
+      const unsub = onSnapshot(q, snap => {
+        setBarberosOcupados(snap.docs.map(d => d.data().barbero));
+      });
+      return () => unsub();
+    } else {
+      setBarberosOcupados([]);
+    }
+  }, [fecha, hora]);
 
   useEffect(() => {
     if (servicio && fecha && hora) {
@@ -46,13 +83,14 @@ export default function TurnoForm() {
       );
       const unsub = onSnapshot(q, snap => {
         const barbs = [...new Set(snap.docs.map(d => d.data().barbero))];
-        setBarberosDisponibles(barbs);
+        const disponibles = barbs.filter(b => !barberosOcupados.includes(b));
+        setBarberosDisponibles(disponibles);
       });
       return () => unsub();
     } else {
       setBarberosDisponibles([]);
     }
-  }, [servicio, fecha, hora]);
+  }, [servicio, fecha, hora, barberosOcupados]);
 
   const guardarTurno = async () => {
     if (!nombre || !fecha || !hora || !servicio || !barbero) return;

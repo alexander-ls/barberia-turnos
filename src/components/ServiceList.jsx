@@ -99,9 +99,9 @@ export default function ServiceList() {
                 </button>
               </div>
             </div>
-          )
+          )}
         </li>
-      ))
+      ))}
     </ul>
   );
 }

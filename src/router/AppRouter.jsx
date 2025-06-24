@@ -11,8 +11,8 @@ export default function AppRouter() {
   return (
     <HashRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/landing" element={<Landing />} />
+        <Route path="/" element={<Landing />} />
+        <Route path="/login" element={<Home />} />
         <Route path="/servicios" element={<Services />} />
         <Route path="/barberos" element={<Barbers />} />
         <Route path="/agendar" element={<Agendar />} />

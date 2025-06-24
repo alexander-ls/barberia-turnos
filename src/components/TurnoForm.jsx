@@ -20,6 +20,7 @@ export default function TurnoForm() {
   const [slotsPorHora, setSlotsPorHora] = useState({});
   const [turnosPorHora, setTurnosPorHora] = useState({});
   const [barberosOcupados, setBarberosOcupados] = useState([]);
+  const [exito, setExito] = useState(false);
 
   useEffect(() => {
     const unsubServicios = onSnapshot(collection(db, 'servicios'), snap => {
@@ -123,6 +124,8 @@ export default function TurnoForm() {
       userId,
       timestamp: new Date(),
     });
+    setExito(true);
+    setTimeout(() => setExito(false), 3000);
     setNombre('');
     setFecha('');
     setHora('');
@@ -132,6 +135,11 @@ export default function TurnoForm() {
 
   return (
     <div className="flex flex-col space-y-2 mb-4">
+      {exito && (
+        <div role="alert" className="alert alert-success">
+          <span>Turno guardado</span>
+        </div>
+      )}
       <select className="border p-2 rounded" value={servicio} onChange={e => setServicio(e.target.value)}>
         <option value="">Seleccione un servicio</option>
         {servicios.map(s => (

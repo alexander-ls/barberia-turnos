@@ -30,19 +30,17 @@ export default function AdminDashboard() {
             <AllTurnosList />
           </div>
         </div>
-      </div>
-
-      <div className="card bg-base-100 shadow">
-        <div className="card-body">
-          <h3 className="card-title">Turnos por barbero</h3>
-          <BarberTurnos />
+        <div className="card bg-base-100 shadow">
+          <div className="card-body">
+            <h3 className="card-title">Turnos por barbero</h3>
+            <BarberTurnos />
+          </div>
         </div>
-      </div>
-
-      <div className="card bg-base-100 shadow">
-        <div className="card-body">
-          <h3 className="card-title">Horarios cargados</h3>
-          <AllBarberSchedules />
+        <div className="card bg-base-100 shadow">
+          <div className="card-body">
+            <h3 className="card-title">Horarios cargados</h3>
+            <AllBarberSchedules />
+          </div>
         </div>
       </div>
     </div>

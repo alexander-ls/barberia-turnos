@@ -19,8 +19,14 @@ export default function ServiceList() {
   return (
     <ul className="space-y-2">
       {servicios.map((servicio) => (
-        <li key={servicio.id} className="p-2 border rounded flex justify-between">
-          <span>{servicio.nombre}</span>
+        <li
+          key={servicio.id}
+          className="p-2 border rounded flex justify-between"
+        >
+          <span>
+            {servicio.nombre}
+            {servicio.precio ? ` - $${servicio.precio}` : ''}
+          </span>
           <button
             onClick={() => eliminarServicio(servicio.id)}
             className="text-red-600 hover:underline"

@@ -135,11 +135,7 @@ export default function TurnoForm() {
 
   return (
     <div className="flex flex-col space-y-2 mb-4">
-      {exito && (
-        <div role="alert" className="alert alert-success">
-          <span>Turno guardado</span>
-        </div>
-      )}
+   
       <select className="border p-2 rounded" value={servicio} onChange={e => setServicio(e.target.value)}>
         <option value="">Seleccione un servicio</option>
         {servicios.map(s => (
@@ -172,6 +168,11 @@ export default function TurnoForm() {
         <button onClick={guardarTurno} className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
           Guardar turno
         </button>
+      )}
+         {exito && (
+        <div role="alert" className="alert alert-success">
+          <span>Turno guardado</span>
+        </div>
       )}
     </div>
   );

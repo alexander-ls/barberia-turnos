@@ -1,5 +1,6 @@
 import { HashRouter, Routes, Route } from 'react-router-dom';
 import Home from '../pages/Home';
+import Landing from '../pages/Landing';
 import Services from '../pages/Services';
 import Barbers from '../pages/Barbers';
 import AdminDashboard from '../pages/AdminDashboard';
@@ -10,7 +11,8 @@ export default function AppRouter() {
   return (
     <HashRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Landing />} />
+        <Route path="/login" element={<Home />} />
         <Route path="/servicios" element={<Services />} />
         <Route path="/barberos" element={<Barbers />} />
         <Route path="/agendar" element={<Agendar />} />

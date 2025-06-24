@@ -23,7 +23,7 @@ export default function Landing() {
   return (
     <div>
       <header className="p-4 flex justify-end bg-base-200">
-        <a href="#/" className="btn btn-outline">Iniciar sesión</a>
+        <a href="#/login" className="btn btn-outline">Iniciar sesión</a>
       </header>
       <section
         className="relative hero min-h-[60vh] bg-cover bg-center"

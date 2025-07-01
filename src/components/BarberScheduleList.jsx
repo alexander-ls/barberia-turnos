@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { auth, db } from '../auth/FirebaseConfig';
 import { collection, onSnapshot, query, where, deleteDoc, doc } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -6,6 +6,18 @@ import { onAuthStateChanged } from 'firebase/auth';
 export default function BarberScheduleList() {
   const [slots, setSlots] = useState([]);
   const [bookings, setBookings] = useState([]);
+  const [activeDate, setActiveDate] = useState('');
+
+  const dates = useMemo(() => {
+    const unique = Array.from(new Set(slots.map(s => s.fecha)));
+    return unique.sort();
+  }, [slots]);
+
+  useEffect(() => {
+    if (dates.length > 0 && !dates.includes(activeDate)) {
+      setActiveDate(dates[0]);
+    }
+  }, [dates, activeDate]);
 
   useEffect(() => {
     let unsubSlots;
@@ -45,25 +57,53 @@ export default function BarberScheduleList() {
     await deleteDoc(doc(db, 'disponibilidades', id));
   };
 
+  if (slots.length === 0) {
+    return <p>No hay horarios cargados.</p>;
+  }
+
   return (
-    <div className="grid gap-4">
-      {slots.map(s => {
-        const agendado = bookings.some(b => b.fecha === s.fecha && b.hora === s.hora);
-        return (
-          <div key={s.id} className="card bg-base-100 shadow-md p-4">
-            <div className="flex justify-between items-start">
-              <p className="font-semibold">
-                {s.fecha} {s.hora}
-              </p>
-              <button onClick={() => eliminar(s.id)} className="btn btn-xs btn-error">
-                Eliminar
-              </button>
-            </div>
-            <p>{s.servicio}</p>
-            {agendado && <span className="badge badge-success mt-2">Agendado</span>}
-          </div>
-        );
-      })}
+    <div className="space-y-4">
+      <div role="tablist" className="tabs tabs-bordered">
+        {dates.map(date => (
+          <button
+            key={date}
+            role="tab"
+            className={`tab ${activeDate === date ? 'tab-active' : ''}`}
+            onClick={() => setActiveDate(date)}
+          >
+            {date}
+          </button>
+        ))}
+      </div>
+
+      <div className="grid gap-4">
+        {slots
+          .filter(s => s.fecha === activeDate)
+          .map(s => {
+            const agendado = bookings.some(
+              b => b.fecha === s.fecha && b.hora === s.hora
+            );
+            return (
+              <div key={s.id} className="card bg-base-100 shadow-md p-4">
+                <div className="flex justify-between items-start">
+                  <p className="font-semibold">
+                    {s.fecha} {s.hora}
+                  </p>
+                  <button
+                    onClick={() => eliminar(s.id)}
+                    className="btn btn-xs btn-error"
+                  >
+                    Eliminar
+                  </button>
+                </div>
+                <p>{s.servicio}</p>
+                {agendado && (
+                  <span className="badge badge-success mt-2">Agendado</span>
+                )}
+              </div>
+            );
+          })}
+      </div>
     </div>
   );
 }

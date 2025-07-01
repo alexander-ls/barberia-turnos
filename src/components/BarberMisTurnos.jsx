@@ -74,6 +74,17 @@ export default function BarberMisTurnos() {
     await updateDoc(doc(db, 'turnos', id), { estado });
   };
 
+  const turnosDelDia = useMemo(
+    () => turnos.filter(t => t.fecha === activeDate),
+    [turnos, activeDate]
+  );
+  const pendientesCount = turnosDelDia.filter(
+    t => (t.estado || 'pendiente') === 'pendiente'
+  ).length;
+  const atendidosCount = turnosDelDia.filter(
+    t => (t.estado || 'pendiente') === 'atendido'
+  ).length;
+
   if (turnos.length === 0) {
     return <p>No tienes turnos asignados.</p>;
   }
@@ -125,6 +136,13 @@ export default function BarberMisTurnos() {
         </div>
       </div>
 
+      <div role="alert" className="alert alert-info justify-center">
+        <span>
+          Tienes {turnosDelDia.length} turnos hoy. Pendientes: {pendientesCount}
+          {' \u2013 '}Atendidos: {atendidosCount}
+        </span>
+      </div>
+
       <div className="grid gap-4">
         {turnos
           .filter(t => t.fecha === activeDate)
@@ -158,14 +176,17 @@ export default function BarberMisTurnos() {
                   onClick={() => actualizarEstado(t.id, 'atendido')}
                   className="btn btn-xs btn-success"
                 >
-                  ✔ Marcar como atendido
+                  ✅ Marcar como atendido
                 </button>
                 <button
                   disabled={(t.estado || 'pendiente') !== 'pendiente'}
-                  onClick={() => actualizarEstado(t.id, 'cancelado')}
+                  onClick={() =>
+                    confirm('¿Cancelar este turno?') &&
+                    actualizarEstado(t.id, 'cancelado')
+                  }
                   className="btn btn-xs btn-error"
                 >
-                  ✖ Cancelar turno
+                  ❌ Cancelar turno
                 </button>
               </div>
             </div>

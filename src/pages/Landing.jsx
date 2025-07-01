@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../auth/FirebaseConfig';
 import hero from '../assets/barber.svg';
+import { Link } from 'react-router-dom';
 
 export default function Landing() {
   const [servicios, setServicios] = useState([]);
@@ -22,8 +23,13 @@ export default function Landing() {
 
   return (
     <div>
-      <header className="p-4 flex justify-end bg-base-200">
-        <a href="#/login" className="btn btn-outline">Iniciar sesión</a>
+      <header className="navbar bg-base-200 justify-between px-4">
+        <Link to="/" className="btn btn-ghost text-xl">Barbería</Link>
+        <nav className="space-x-2">
+          <Link to="/servicios" className="btn btn-ghost btn-sm">Servicios</Link>
+          <Link to="/barberos" className="btn btn-ghost btn-sm">Barberos</Link>
+          <a href="#/login" className="btn btn-outline btn-sm">Iniciar sesión</a>
+        </nav>
       </header>
       <section
         className="relative hero min-h-[60vh] bg-cover bg-center"
@@ -40,38 +46,42 @@ export default function Landing() {
           </div>
         </div>
       </section>
-      <section id="servicios" class="py-16 px-6 max-w-6xl mx-auto">
-        <h2 class="text-3xl font-bold mb-10 text-center">Nuestros Servicios</h2>
-        <div class="grid md:grid-cols-2 gap-8">
-          <ul class="text-lg space-y-4">
-            {servicios.map(s => (
-              <li class="flex justify-between border-b pb-2">
-                <span>{s.nombre}</span>
-                {s.precio && (
-                  <span>${s.precio}</span>
-                )}
-              </li>
-            ))}
-          </ul>
-          <img src="https://joseppons.com/formacion/wp-content/uploads/2021/05/estudiar-barberia.jpg" alt="Fade" class="rounded-lg shadow" />
+      <section id="servicios" className="py-16 px-6 max-w-6xl mx-auto space-y-6">
+        <h2 className="text-3xl font-bold text-center">Nuestros Servicios</h2>
+        <div className="grid md:grid-cols-2 gap-6">
+          {servicios.slice(0,4).map(s => (
+            <div key={s.id} className="card bg-base-200">
+              <div className="card-body">
+                <h3 className="card-title">{s.nombre}</h3>
+                {s.precio && <p className="text-lg">${s.precio}</p>}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="text-center">
+          <Link to="/servicios" className="btn btn-primary">Ver todos</Link>
         </div>
       </section>
 
 
-      <section class="bg-gray-100 py-16 px-6">
-        <h2 class="text-3xl font-bold mb-10 text-center">Conoce a Nuestros Barberos</h2>
-        <div class="flex flex-wrap justify-center gap-8">
-
-        {barberos.map(b => (
-            <div key={b.id} className="text-center">
-              <div class="avatar">
-              <div class="w-24 rounded-full">
-                <img src="https://img.daisyui.com/images/profile/demo/yellingcat@192.webp" />
+      <section className="bg-gray-100 py-16 px-6 space-y-6">
+        <h2 className="text-3xl font-bold text-center">Conoce a Nuestros Barberos</h2>
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 justify-center">
+          {barberos.slice(0,3).map(b => (
+            <Link key={b.id} to={`/barberos/${b.id}`} className="card bg-base-200">
+              <div className="card-body items-center text-center">
+                <div className="avatar">
+                  <div className="w-24 rounded-full">
+                    <img src="https://img.daisyui.com/images/profile/demo/yellingcat@192.webp" />
+                  </div>
+                </div>
+                <h3 className="card-title">{b.nombre}</h3>
               </div>
-            </div>
-            <p class="font-medium">{b.nombre}</p>
-            </div>
+            </Link>
           ))}
+        </div>
+        <div className="text-center">
+          <Link to="/barberos" className="btn btn-primary">Ver todos</Link>
         </div>
       </section>
     </div>

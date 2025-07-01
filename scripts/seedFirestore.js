@@ -10,8 +10,8 @@ admin.initializeApp({
 const db = admin.firestore();
 
 const barbers = [
-  { nombre: 'Juan', email: 'juan@example.com' },
-  { nombre: 'Maria', email: 'maria@example.com' },
+  { nombre: 'Juan', email: 'juan@example.com', telefono: '+573000000001' },
+  { nombre: 'Maria', email: 'maria@example.com', telefono: '+573000000002' },
 ];
 
 const services = [
@@ -25,7 +25,7 @@ const slots = [
 ];
 
 const appointments = [
-  { nombre: 'Pedro', servicio: 'Corte de pelo', fecha: '2024-01-01', hora: '10:00', barbero: 'Juan' },
+  { nombre: 'Pedro', email: 'pedro@example.com', telefono: '+573000000003', servicio: 'Corte de pelo', fecha: '2024-01-01', hora: '10:00', barbero: 'Juan' },
 ];
 
 async function seedCollection(name, data) {

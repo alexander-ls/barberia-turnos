@@ -173,6 +173,8 @@ export default function BarberMisTurnos() {
               <p>
                 {t.fecha} {formatHoraBogota(t.hora)} - {t.servicio}
               </p>
+              {t.email && <p>Email: {t.email}</p>}
+              {t.telefono && <p>Tel\u00e9fono: {t.telefono}</p>}
               <div className="space-x-2">
                 <button
                   disabled={(t.estado || 'pendiente') !== 'pendiente'}

@@ -30,6 +30,7 @@ export default function BarberProfile() {
       </div>
       <h1 className="text-3xl font-bold">{barbero.nombre}</h1>
       {barbero.email && <p className="text-lg">{barbero.email}</p>}
+      {barbero.telefono && <p className="text-lg">Tel: {barbero.telefono}</p>}
     </div>
   );
 }

@@ -22,3 +22,18 @@ node scripts/seedFirestore.js
 ```
 
 This will populate example records for barbers, services, availability slots and appointments.
+
+## Cloud Functions
+
+The `functions` folder contains a Cloud Function that sends WhatsApp notifications
+when a new appointment is created. Configure your Twilio credentials using
+
+```
+firebase functions:config:set twilio.sid="ACCOUNT_SID" twilio.token="AUTH_TOKEN" twilio.number="whatsapp:+123456789"
+```
+
+Then deploy with:
+
+```
+firebase deploy --only functions
+```

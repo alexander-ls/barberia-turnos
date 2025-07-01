@@ -14,6 +14,8 @@ export default function TurnoForm() {
   const [fecha, setFecha] = useState('');
   const [hora, setHora] = useState('');
   const [nombre, setNombre] = useState('');
+  const [email, setEmail] = useState('');
+  const [telefono, setTelefono] = useState('');
   const [barbero, setBarbero] = useState('');
   const [servicios, setServicios] = useState([]);
   const [horasDisponibles, setHorasDisponibles] = useState([]);
@@ -114,10 +116,12 @@ export default function TurnoForm() {
   }, [servicio, fecha, hora, barberosOcupados]);
 
   const guardarTurno = async () => {
-    if (!nombre || !fecha || !hora || !servicio || !barbero) return;
+    if (!nombre || !email || !telefono || !fecha || !hora || !servicio || !barbero) return;
     const userId = auth.currentUser ? auth.currentUser.uid : null;
     await addDoc(collection(db, 'turnos'), {
       nombre,
+      email,
+      telefono,
       fecha,
       hora,
       servicio,
@@ -129,6 +133,8 @@ export default function TurnoForm() {
     setExito(true);
     setTimeout(() => setExito(false), 3000);
     setNombre('');
+    setEmail('');
+    setTelefono('');
     setFecha('');
     setHora('');
     setServicio('');
@@ -170,6 +176,12 @@ export default function TurnoForm() {
       )}
       {barbero && (
         <input className="border p-2 rounded" value={nombre} onChange={e => setNombre(e.target.value)} placeholder="Nombre del cliente" />
+      )}
+      {barbero && (
+        <input className="border p-2 rounded" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Correo del cliente" />
+      )}
+      {barbero && (
+        <input className="border p-2 rounded" value={telefono} onChange={e => setTelefono(e.target.value)} placeholder="Tel\u00e9fono del cliente" />
       )}
       {barbero && (
         <button onClick={guardarTurno} className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">

@@ -56,20 +56,7 @@ export default function Landing() {
                   <h3 className="card-title">{s.nombre}</h3>
                   {s.precio && <p className="text-lg">${s.precio}</p>}
                 </div>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  fill="none"
-                  className="w-6 h-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M8.25 4.5l7.5 7.5-7.5 7.5"
-                  />
-                </svg>
+               <img className='w-32 h-32' src="https://cdn-icons-png.flaticon.com/512/7338/7338646.png"></img>
               </div>
             </div>
           ))}

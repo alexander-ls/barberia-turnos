@@ -46,7 +46,7 @@ export default function BarberDashboard() {
       <div className="divider"></div>
 
       {section === 'cargar' && (
-        <div className="card bg-base-100 shadow border border-base-300">
+        <div className="card bg-base-100 shadow border border-base-300 w-full max-w-md mx-auto">
           <div className="card-body">
             <h3 className="card-title">Cargar horarios disponibles</h3>
             <BarberScheduleForm />

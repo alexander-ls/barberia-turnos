@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { db } from '../auth/FirebaseConfig';
 import { collection, onSnapshot } from 'firebase/firestore';
+import { formatHoraBogota } from '../utils/time';
 
 export default function BarberTurnos() {
   const [barberos, setBarberos] = useState([]);
@@ -32,7 +33,7 @@ export default function BarberTurnos() {
           <ul className="ml-4 list-disc space-y-1">
             {barbero.turnos.map(t => (
               <li key={t.id}>
-                {t.fecha} {t.hora} - {t.nombre}
+                {t.fecha} {formatHoraBogota(t.hora)} - {t.nombre}
               </li>
             ))}
           </ul>

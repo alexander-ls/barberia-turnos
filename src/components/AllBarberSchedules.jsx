@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { db } from '../auth/FirebaseConfig';
 import { collection, onSnapshot } from 'firebase/firestore';
+import { formatHoraBogota } from '../utils/time';
 
 export default function AllBarberSchedules() {
   const [barberos, setBarberos] = useState([]);
@@ -32,7 +33,7 @@ export default function AllBarberSchedules() {
           <ul className="ml-4 list-disc space-y-1">
             {barbero.slots.map(s => (
               <li key={s.id}>
-                {s.fecha} {s.hora} - {s.servicio}
+                {s.fecha} {formatHoraBogota(s.hora)} - {s.servicio}
               </li>
             ))}
           </ul>

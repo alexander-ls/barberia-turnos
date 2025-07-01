@@ -17,22 +17,24 @@ export default function BarberList() {
   };
 
   return (
-    <ul className="space-y-2">
+    <div className="grid gap-4">
       {barberos.map((barbero) => (
-        <li key={barbero.id} className="p-2 border rounded flex justify-between">
-          <span>
-            {barbero.nombre}
-            {barbero.email ? ` - ${barbero.email}` : ''}
-            {barbero.telefono ? ` - ${barbero.telefono}` : ''}
-          </span>
-          <button
-            onClick={() => eliminarBarbero(barbero.id)}
-            className="text-red-600 hover:underline"
-          >
-            Eliminar
-          </button>
-        </li>
+        <div key={barbero.id} className="card bg-base-100 shadow-md p-4">
+          <div className="flex justify-between items-start">
+            <div>
+              <p className="font-semibold">{barbero.nombre}</p>
+              {barbero.email && <p>{barbero.email}</p>}
+              {barbero.telefono && <p>{barbero.telefono}</p>}
+            </div>
+            <button
+              onClick={() => eliminarBarbero(barbero.id)}
+              className="btn btn-xs btn-error"
+            >
+              Eliminar
+            </button>
+          </div>
+        </div>
       ))}
-    </ul>
+    </div>
   );
 }

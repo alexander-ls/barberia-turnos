@@ -2,6 +2,7 @@ import { useEffect, useState, useMemo, useRef } from 'react';
 import { auth, db } from '../auth/FirebaseConfig';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
+import { getTodayBogota, formatHoraBogota } from '../utils/time';
 
 export default function BarberMisTurnos() {
   const [turnos, setTurnos] = useState([]);
@@ -21,7 +22,7 @@ export default function BarberMisTurnos() {
   };
 
   const dates = useMemo(() => {
-    const today = new Date().toISOString().split('T')[0];
+    const today = getTodayBogota();
     const unique = Array.from(new Set(turnos.map(t => t.fecha)));
     return unique
       .filter(d => d >= today)
@@ -106,7 +107,7 @@ export default function BarberMisTurnos() {
             <div key={t.id} className="card bg-base-100 shadow-md p-4">
               <p className="font-semibold">{t.nombre}</p>
               <p>
-                {t.fecha} {t.hora} - {t.servicio}
+                {t.fecha} {formatHoraBogota(t.hora)} - {t.servicio}
               </p>
             </div>
           ))}

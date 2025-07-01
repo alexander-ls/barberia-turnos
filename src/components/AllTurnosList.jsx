@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { db } from '../auth/FirebaseConfig';
 import { collection, onSnapshot, deleteDoc, doc, query, orderBy } from 'firebase/firestore';
+import { formatHoraBogota } from '../utils/time';
 
 export default function AllTurnosList() {
   const [turnos, setTurnos] = useState([]);
@@ -29,7 +30,7 @@ export default function AllTurnosList() {
               </button>
             </div>
             <p>Fecha: {turno.fecha}</p>
-            <p>Hora: {turno.hora}</p>
+            <p>Hora: {formatHoraBogota(turno.hora)}</p>
             <p>Servicio: {turno.servicio}</p>
             <p>Barbero: {turno.barbero}</p>
           </div>

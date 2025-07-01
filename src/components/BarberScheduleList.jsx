@@ -2,6 +2,7 @@ import { useEffect, useState, useMemo, useRef } from 'react';
 import { auth, db } from '../auth/FirebaseConfig';
 import { collection, onSnapshot, query, where, deleteDoc, doc } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
+import { getTodayBogota, formatHoraBogota } from '../utils/time';
 
 export default function BarberScheduleList() {
   const [slots, setSlots] = useState([]);
@@ -22,7 +23,7 @@ export default function BarberScheduleList() {
   };
 
   const dates = useMemo(() => {
-    const today = new Date().toISOString().split('T')[0];
+    const today = getTodayBogota();
     const unique = Array.from(new Set(slots.map(s => s.fecha)));
     return unique
       .filter(d => d >= today)
@@ -115,7 +116,7 @@ export default function BarberScheduleList() {
               <div key={s.id} className="card bg-base-100 shadow-md p-4">
                 <div className="flex justify-between items-start">
                   <p className="font-semibold">
-                    {s.fecha} {s.hora}
+                    {s.fecha} {formatHoraBogota(s.hora)}
                   </p>
                   <button
                     onClick={() => eliminar(s.id)}

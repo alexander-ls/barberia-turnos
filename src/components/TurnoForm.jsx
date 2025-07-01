@@ -7,6 +7,7 @@ import {
   query,
   where,
 } from 'firebase/firestore';
+import { formatHoraBogota } from '../utils/time';
 
 export default function TurnoForm() {
   const [servicio, setServicio] = useState('');
@@ -154,7 +155,7 @@ export default function TurnoForm() {
         <select className="border p-2 rounded" value={hora} onChange={e => setHora(e.target.value)}>
           <option value="">Seleccione una hora</option>
           {horasDisponibles.map(h => (
-            <option key={h} value={h}>{h}</option>
+            <option key={h} value={h}>{formatHoraBogota(h)}</option>
           ))}
         </select>
       )}

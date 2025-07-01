@@ -47,9 +47,9 @@ export default function ServiceList() {
   };
 
   return (
-    <ul className="space-y-2">
+    <div className="grid gap-4">
       {servicios.map((servicio) => (
-        <li key={servicio.id} className="p-2 border rounded">
+        <div key={servicio.id} className="card bg-base-100 shadow-md p-4">
           {editId === servicio.id ? (
             <div className="space-y-2">
               <input
@@ -64,10 +64,7 @@ export default function ServiceList() {
                 onChange={(e) => setEditPrecio(e.target.value)}
               />
               <div className="flex justify-end space-x-2">
-                <button
-                  onClick={guardarEdicion}
-                  className="btn btn-sm btn-primary"
-                >
+                <button onClick={guardarEdicion} className="btn btn-sm btn-primary">
                   Guardar
                 </button>
                 <button
@@ -100,8 +97,8 @@ export default function ServiceList() {
               </div>
             </div>
           )}
-        </li>
+        </div>
       ))}
-    </ul>
+    </div>
   );
 }

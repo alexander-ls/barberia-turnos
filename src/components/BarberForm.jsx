@@ -9,6 +9,7 @@ export default function BarberForm() {
   const [email, setEmail] = useState('');
   const [telefono, setTelefono] = useState('');
   const [password, setPassword] = useState('');
+  const [imagen, setImagen] = useState('');
 
   const guardarBarbero = async () => {
     if (!nombre || !email || !telefono || !password) return;
@@ -22,6 +23,7 @@ export default function BarberForm() {
       nombre,
       email,
       telefono,
+      imagen,
       timestamp: new Date(),
     });
 
@@ -29,6 +31,7 @@ export default function BarberForm() {
     setEmail('');
     setTelefono('');
     setPassword('');
+    setImagen('');
   };
 
   return (
@@ -58,6 +61,21 @@ export default function BarberForm() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         placeholder="Contraseña"
+      />
+      <input
+        className="border p-2 rounded"
+        type="file"
+        accept="image/*"
+        onChange={(e) => {
+          const file = e.target.files?.[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => setImagen(reader.result.toString());
+            reader.readAsDataURL(file);
+          } else {
+            setImagen('');
+          }
+        }}
       />
       <button
         onClick={guardarBarbero}

@@ -20,11 +20,24 @@ export default function BarberList() {
     <div className="grid gap-4">
       {barberos.map((barbero) => (
         <div key={barbero.id} className="card bg-base-100 shadow-md p-4">
-          <div className="flex justify-between items-start">
-            <div>
-              <p className="font-semibold">{barbero.nombre}</p>
-              {barbero.email && <p>{barbero.email}</p>}
-              {barbero.telefono && <p>{barbero.telefono}</p>}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="avatar placeholder">
+                {barbero.imagen ? (
+                  <div className="w-12 rounded-full">
+                    <img src={barbero.imagen} alt={barbero.nombre} />
+                  </div>
+                ) : (
+                  <div className="bg-neutral text-neutral-content rounded-full w-12 flex items-center justify-center">
+                    <span className="text-lg">{barbero.nombre.charAt(0).toUpperCase()}</span>
+                  </div>
+                )}
+              </div>
+              <div>
+                <p className="font-semibold">{barbero.nombre}</p>
+                {barbero.email && <p>{barbero.email}</p>}
+                {barbero.telefono && <p>{barbero.telefono}</p>}
+              </div>
             </div>
             <button
               onClick={() => eliminarBarbero(barbero.id)}

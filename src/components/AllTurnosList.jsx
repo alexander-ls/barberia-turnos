@@ -33,6 +33,8 @@ export default function AllTurnosList() {
             <p>Hora: {formatHoraBogota(turno.hora)}</p>
             <p>Servicio: {turno.servicio}</p>
             <p>Barbero: {turno.barbero}</p>
+            {turno.email && <p>Correo: {turno.email}</p>}
+            {turno.telefono && <p>Teléfono: {turno.telefono}</p>}
           </div>
         </div>
       ))}

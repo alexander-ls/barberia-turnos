@@ -23,6 +23,7 @@ export default function BarberList() {
           <span>
             {barbero.nombre}
             {barbero.email ? ` - ${barbero.email}` : ''}
+            {barbero.telefono ? ` - ${barbero.telefono}` : ''}
           </span>
           <button
             onClick={() => eliminarBarbero(barbero.id)}

@@ -7,10 +7,11 @@ import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 export default function BarberForm() {
   const [nombre, setNombre] = useState('');
   const [email, setEmail] = useState('');
+  const [telefono, setTelefono] = useState('');
   const [password, setPassword] = useState('');
 
   const guardarBarbero = async () => {
-    if (!nombre || !email || !password) return;
+    if (!nombre || !email || !telefono || !password) return;
 
     // crear usuario sin afectar la sesión actual
     const auxApp = initializeApp(firebaseConfig, 'aux');
@@ -20,11 +21,13 @@ export default function BarberForm() {
     await addDoc(collection(db, 'barberos'), {
       nombre,
       email,
+      telefono,
       timestamp: new Date(),
     });
 
     setNombre('');
     setEmail('');
+    setTelefono('');
     setPassword('');
   };
 
@@ -42,6 +45,12 @@ export default function BarberForm() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Correo electrónico"
+      />
+      <input
+        className="border p-2 rounded"
+        value={telefono}
+        onChange={(e) => setTelefono(e.target.value)}
+        placeholder="Teléfono"
       />
       <input
         className="border p-2 rounded"

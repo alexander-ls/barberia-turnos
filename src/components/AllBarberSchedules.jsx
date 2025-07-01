@@ -8,18 +8,19 @@ export default function AllBarberSchedules() {
   const [slots, setSlots] = useState([]);
   const [turnos, setTurnos] = useState([]);
   const [activeDate, setActiveDate] = useState('');
-  const [filter, setFilter] = useState('');
-  const tabsRef = useRef(null);
+  const [activeBarbero, setActiveBarbero] = useState('');
+  const dateTabsRef = useRef(null);
+  const barberTabsRef = useRef(null);
 
-  const scrollLeft = () => {
-    if (tabsRef.current) {
-      tabsRef.current.scrollBy({ left: -150, behavior: 'smooth' });
+  const scrollLeft = ref => {
+    if (ref.current) {
+      ref.current.scrollBy({ left: -150, behavior: 'smooth' });
     }
   };
 
-  const scrollRight = () => {
-    if (tabsRef.current) {
-      tabsRef.current.scrollBy({ left: 150, behavior: 'smooth' });
+  const scrollRight = ref => {
+    if (ref.current) {
+      ref.current.scrollBy({ left: 150, behavior: 'smooth' });
     }
   };
 
@@ -51,12 +52,17 @@ export default function AllBarberSchedules() {
     }
   }, [dates, activeDate]);
 
-  const grouped = barberos
-    .filter(b => b.nombre.toLowerCase().includes(filter.toLowerCase()))
-    .map(b => ({
-      ...b,
-      slots: slots.filter(s => s.barbero === b.nombre && s.fecha === activeDate),
-    }));
+  const barberoNames = useMemo(() => barberos.map(b => b.nombre), [barberos]);
+
+  useEffect(() => {
+    if (barberoNames.length > 0 && !barberoNames.includes(activeBarbero)) {
+      setActiveBarbero(barberoNames[0]);
+    }
+  }, [barberoNames, activeBarbero]);
+
+  const slotsDelBarbero = slots.filter(
+    s => s.barbero === activeBarbero && s.fecha === activeDate
+  );
 
   if (dates.length === 0) {
     return <p>No hay horarios cargados.</p>;
@@ -65,9 +71,9 @@ export default function AllBarberSchedules() {
   return (
     <div className="space-y-4">
       <div className="flex items-center">
-        <button onClick={scrollLeft} className="btn btn-square btn-sm mr-2">❮</button>
+        <button onClick={() => scrollLeft(dateTabsRef)} className="btn btn-square btn-sm mr-2">❮</button>
         <div
-          ref={tabsRef}
+          ref={dateTabsRef}
           role="tablist"
           className="tabs tabs-boxed flex-1 overflow-x-auto whitespace-nowrap scroll-smooth"
         >
@@ -82,49 +88,52 @@ export default function AllBarberSchedules() {
             </button>
           ))}
         </div>
-        <button onClick={scrollRight} className="btn btn-square btn-sm ml-2">❯</button>
+        <button onClick={() => scrollRight(dateTabsRef)} className="btn btn-square btn-sm ml-2">❯</button>
       </div>
 
-      <input
-        type="text"
-        placeholder="Filtrar barbero"
-        className="input input-bordered w-full max-w-xs"
-        value={filter}
-        onChange={e => setFilter(e.target.value)}
-      />
+      <div className="flex justify-center">
+        <div role="tablist" className="tabs tabs-boxed overflow-x-auto" ref={barberTabsRef}>
+          {barberoNames.map(name => (
+            <button
+              key={name}
+              role="tab"
+              className={`tab ${activeBarbero === name ? 'tab-active' : ''}`}
+              onClick={() => setActiveBarbero(name)}
+            >
+              {name}
+            </button>
+          ))}
+        </div>
+      </div>
 
       <div className="space-y-6 mt-4">
-        {grouped.map(barbero => (
-          <div key={barbero.id} className="space-y-2">
-            <h3 className="font-bold mb-2">{barbero.nombre}</h3>
-            {barbero.slots.length === 0 ? (
-              <p className="text-sm italic">Sin horarios</p>
-            ) : (
-              <div className="grid gap-2">
-                {barbero.slots.map(s => {
-                  const agendado = turnos.some(
-                    t =>
-                      t.fecha === s.fecha &&
-                      t.hora === s.hora &&
-                      t.barbero === s.barbero
-                  );
-                  return (
-                    <div key={s.id} className="card bg-base-100 shadow-md p-4">
-                      <div className="flex justify-between items-start">
-                        <p className="font-semibold">
-                          {formatHoraBogota(s.hora)} - {s.servicio}
-                        </p>
-                        {agendado && (
-                          <span className="badge badge-success">Agendado</span>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
+        <h3 className="font-bold mb-2">{activeBarbero}</h3>
+        {slotsDelBarbero.length === 0 ? (
+          <p className="text-sm italic">Sin horarios</p>
+        ) : (
+          <div className="grid gap-2">
+            {slotsDelBarbero.map(s => {
+              const agendado = turnos.some(
+                t =>
+                  t.fecha === s.fecha &&
+                  t.hora === s.hora &&
+                  t.barbero === s.barbero
+              );
+              return (
+                <div key={s.id} className="card bg-base-100 shadow-md p-4">
+                  <div className="flex justify-between items-start">
+                    <p className="font-semibold">
+                      {formatHoraBogota(s.hora)} - {s.servicio}
+                    </p>
+                    {agendado && (
+                      <span className="badge badge-success">Agendado</span>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
           </div>
-        ))}
+        )}
       </div>
     </div>
   );

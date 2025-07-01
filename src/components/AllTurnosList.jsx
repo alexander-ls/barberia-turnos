@@ -5,18 +5,19 @@ import { formatHoraBogota } from '../utils/time';
 
 export default function AllTurnosList() {
   const [turnos, setTurnos] = useState([]);
+  const [activeDate, setActiveDate] = useState('');
   const [activeBarbero, setActiveBarbero] = useState('');
-  const tabsRef = useRef(null);
+  const dateTabsRef = useRef(null);
 
-  const scrollLeft = () => {
-    if (tabsRef.current) {
-      tabsRef.current.scrollBy({ left: -150, behavior: 'smooth' });
+  const scrollLeft = ref => {
+    if (ref.current) {
+      ref.current.scrollBy({ left: -150, behavior: 'smooth' });
     }
   };
 
-  const scrollRight = () => {
-    if (tabsRef.current) {
-      tabsRef.current.scrollBy({ left: 150, behavior: 'smooth' });
+  const scrollRight = ref => {
+    if (ref.current) {
+      ref.current.scrollBy({ left: 150, behavior: 'smooth' });
     }
   };
 
@@ -28,9 +29,23 @@ export default function AllTurnosList() {
     return () => unsubscribe();
   }, []);
 
-  const barberos = useMemo(
-    () => Array.from(new Set(turnos.map(t => t.barbero))),
+  const dates = useMemo(
+    () => Array.from(new Set(turnos.map(t => t.fecha))).sort(),
     [turnos]
+  );
+
+  useEffect(() => {
+    if (dates.length > 0 && !dates.includes(activeDate)) {
+      setActiveDate(dates[0]);
+    }
+  }, [dates, activeDate]);
+
+  const barberos = useMemo(
+    () =>
+      Array.from(
+        new Set(turnos.filter(t => t.fecha === activeDate).map(t => t.barbero))
+      ),
+    [turnos, activeDate]
   );
 
   useEffect(() => {
@@ -50,12 +65,28 @@ export default function AllTurnosList() {
   return (
     <div className="space-y-4">
       <div className="flex items-center">
-        <button onClick={scrollLeft} className="btn btn-square btn-sm mr-2">❮</button>
+        <button onClick={() => scrollLeft(dateTabsRef)} className="btn btn-square btn-sm mr-2">❮</button>
         <div
-          ref={tabsRef}
+          ref={dateTabsRef}
           role="tablist"
           className="tabs tabs-boxed flex-1 overflow-x-auto whitespace-nowrap scroll-smooth"
         >
+          {dates.map(d => (
+            <button
+              key={d}
+              role="tab"
+              className={`tab ${activeDate === d ? 'tab-active' : ''}`}
+              onClick={() => setActiveDate(d)}
+            >
+              {d}
+            </button>
+          ))}
+        </div>
+        <button onClick={() => scrollRight(dateTabsRef)} className="btn btn-square btn-sm ml-2">❯</button>
+      </div>
+
+      <div className="flex justify-center">
+        <div role="tablist" className="tabs tabs-boxed overflow-x-auto">
           {barberos.map(b => (
             <button
               key={b}
@@ -67,11 +98,11 @@ export default function AllTurnosList() {
             </button>
           ))}
         </div>
-        <button onClick={scrollRight} className="btn btn-square btn-sm ml-2">❯</button>
       </div>
 
       <div className="grid gap-4">
         {turnos
+          .filter(t => t.fecha === activeDate)
           .filter(t => t.barbero === activeBarbero)
           .map(turno => (
             <div key={turno.id} className="card bg-base-100 shadow-md">

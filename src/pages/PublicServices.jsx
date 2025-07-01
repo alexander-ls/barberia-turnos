@@ -18,9 +18,25 @@ export default function PublicServices() {
       <div className="grid md:grid-cols-2 gap-4">
         {servicios.map(s => (
           <div key={s.id} className="card bg-base-200">
-            <div className="card-body">
-              <h2 className="card-title">{s.nombre}</h2>
-              {s.precio && <p className="text-lg">${s.precio}</p>}
+            <div className="card-body flex-row items-center justify-between">
+              <div>
+                <h2 className="card-title">{s.nombre}</h2>
+                {s.precio && <p className="text-lg">${s.precio}</p>}
+              </div>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                fill="none"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M8.25 4.5l7.5 7.5-7.5 7.5"
+                />
+              </svg>
             </div>
           </div>
         ))}

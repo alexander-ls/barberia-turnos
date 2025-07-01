@@ -28,10 +28,13 @@ export default function UserMenu() {
 
   return (
     <div className="dropdown dropdown-end">
-      <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar placeholder">
-        <div className="bg-neutral text-neutral-content rounded-full w-10">
-          <span className="text-lg">{name ? name.charAt(0).toUpperCase() : '?'}</span>
+      <div tabIndex={0} role="button" className="btn btn-ghost flex items-center gap-2">
+        <div className="avatar placeholder">
+          <div className="bg-neutral text-neutral-content rounded-full w-10">
+            <span className="text-lg">{name ? name.charAt(0).toUpperCase() : '?'}</span>
+          </div>
         </div>
+        <span>{name}</span>
       </div>
       <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
         <li className="px-4 py-2 font-semibold">{name}</li>

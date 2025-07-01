@@ -13,8 +13,8 @@ export default function AdminDashboard() {
       </div>
 
       <div className="space-x-2">
-        <a href="#/servicios" className="btn btn-sm btn-outline">Servicios</a>
-        <a href="#/barberos" className="btn btn-sm btn-outline">Barberos</a>
+        <a href="#/admin/servicios" className="btn btn-sm btn-outline">Servicios</a>
+        <a href="#/admin/barberos" className="btn btn-sm btn-outline">Barberos</a>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">

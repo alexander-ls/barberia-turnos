@@ -14,6 +14,8 @@ export default function TurnoForm() {
   const [fecha, setFecha] = useState('');
   const [hora, setHora] = useState('');
   const [nombre, setNombre] = useState('');
+  const [email, setEmail] = useState('');
+  const [telefono, setTelefono] = useState('');
   const [barbero, setBarbero] = useState('');
   const [servicios, setServicios] = useState([]);
   const [horasDisponibles, setHorasDisponibles] = useState([]);
@@ -114,18 +116,33 @@ export default function TurnoForm() {
   }, [servicio, fecha, hora, barberosOcupados]);
 
   const guardarTurno = async () => {
-    if (!nombre || !fecha || !hora || !servicio || !barbero) return;
+    if (!nombre || !fecha || !hora || !servicio || !barbero || !email || !telefono) return;
     const userId = auth.currentUser ? auth.currentUser.uid : null;
-    await addDoc(collection(db, 'turnos'), {
+    const turno = {
       nombre,
       fecha,
       hora,
       servicio,
       barbero,
+      email,
+      telefono,
       estado: 'pendiente',
       userId,
       timestamp: new Date(),
-    });
+    };
+    await addDoc(collection(db, 'turnos'), turno);
+    try {
+      await fetch(
+        'https://hook.us2.make.com/307slkl4v8t4p76yy91sugd5uql87t6d',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(turno),
+        }
+      );
+    } catch (err) {
+      console.error('Error calling webhook', err);
+    }
     setExito(true);
     setTimeout(() => setExito(false), 3000);
     setNombre('');
@@ -133,6 +150,8 @@ export default function TurnoForm() {
     setHora('');
     setServicio('');
     setBarbero('');
+    setEmail('');
+    setTelefono('');
   };
 
   return (
@@ -172,11 +191,17 @@ export default function TurnoForm() {
         <input className="border p-2 rounded" value={nombre} onChange={e => setNombre(e.target.value)} placeholder="Nombre del cliente" />
       )}
       {barbero && (
+        <input className="border p-2 rounded" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Correo del cliente" />
+      )}
+      {barbero && (
+        <input className="border p-2 rounded" value={telefono} onChange={e => setTelefono(e.target.value)} placeholder="Teléfono del cliente" />
+      )}
+      {barbero && (
         <button onClick={guardarTurno} className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
           Guardar turno
         </button>
       )}
-         {exito && (
+      {exito && (
         <div role="alert" className="alert alert-success">
           <span>Turno guardado</span>
         </div>

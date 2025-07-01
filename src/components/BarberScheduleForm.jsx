@@ -1,6 +1,12 @@
 import { useState, useEffect } from 'react';
 import { auth, db } from '../auth/FirebaseConfig';
-import { collection, addDoc, onSnapshot, query, where } from 'firebase/firestore';
+import {
+  collection,
+  addDoc,
+  onSnapshot,
+  query,
+  where,
+} from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 
 export default function BarberScheduleForm() {
@@ -11,15 +17,17 @@ export default function BarberScheduleForm() {
   const [servicios, setServicios] = useState([]);
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState({ message: '', type: '' });
+  const canSave = barbero && servicio && fecha && hora && !loading;
 
   useEffect(() => {
     const unsubServicios = onSnapshot(collection(db, 'servicios'), snap => {
       setServicios(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
     });
+    let unsubBarbero;
     const unsubAuth = onAuthStateChanged(auth, user => {
       if (user) {
         const q = query(collection(db, 'barberos'), where('email', '==', user.email));
-        onSnapshot(q, snap => {
+        unsubBarbero = onSnapshot(q, snap => {
           if (!snap.empty) setBarbero(snap.docs[0].data().nombre);
         });
       }
@@ -27,6 +35,7 @@ export default function BarberScheduleForm() {
     return () => {
       unsubServicios();
       unsubAuth();
+      if (unsubBarbero) unsubBarbero();
     };
   }, []);
 
@@ -38,7 +47,11 @@ export default function BarberScheduleForm() {
   }, [toast]);
 
   const guardar = async () => {
-    if (!barbero || !servicio || !fecha || !hora || loading) return;
+    if (!barbero || !servicio || !fecha || !hora) {
+      setToast({ message: 'Complete todos los campos', type: 'error' });
+      return;
+    }
+    if (loading) return;
     try {
       setLoading(true);
       await addDoc(collection(db, 'disponibilidades'), {
@@ -62,6 +75,7 @@ export default function BarberScheduleForm() {
 
   return (
     <div className="flex flex-col space-y-2 mb-4">
+      <p className="font-semibold">Barbero: {barbero || 'Cargando...'}</p>
       <select className="border p-2 rounded" value={servicio} onChange={e => setServicio(e.target.value)}>
         <option value="">Seleccione un servicio</option>
         {servicios.map(s => (
@@ -70,8 +84,12 @@ export default function BarberScheduleForm() {
       </select>
       <input type="date" className="border p-2 rounded" value={fecha} onChange={e => setFecha(e.target.value)} />
       <input type="time" className="border p-2 rounded" value={hora} onChange={e => setHora(e.target.value)} />
-      <button onClick={guardar} className="btn btn-primary" disabled={loading}>
-        {loading ? <span className="loading loading-spinner"></span> : 'Agregar horario'}
+      <button onClick={guardar} className="btn btn-primary" disabled={!canSave}>
+        {loading ? (
+          <span className="loading loading-spinner"></span>
+        ) : (
+          'Agregar horario'
+        )}
       </button>
       {toast.message && (
         <div className="toast toast-top toast-end">

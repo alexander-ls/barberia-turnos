@@ -9,6 +9,8 @@ export default function BarberScheduleForm() {
   const [fecha, setFecha] = useState('');
   const [hora, setHora] = useState('');
   const [servicios, setServicios] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [toast, setToast] = useState({ message: '', type: '' });
 
   useEffect(() => {
     const unsubServicios = onSnapshot(collection(db, 'servicios'), snap => {
@@ -28,18 +30,34 @@ export default function BarberScheduleForm() {
     };
   }, []);
 
+  useEffect(() => {
+    if (toast.message) {
+      const t = setTimeout(() => setToast({ message: '', type: '' }), 3000);
+      return () => clearTimeout(t);
+    }
+  }, [toast]);
+
   const guardar = async () => {
-    if (!barbero || !servicio || !fecha || !hora) return;
-    await addDoc(collection(db, 'disponibilidades'), {
-      barbero,
-      servicio,
-      fecha,
-      hora,
-      timestamp: new Date(),
-    });
-    setServicio('');
-    setFecha('');
-    setHora('');
+    if (!barbero || !servicio || !fecha || !hora || loading) return;
+    try {
+      setLoading(true);
+      await addDoc(collection(db, 'disponibilidades'), {
+        barbero,
+        servicio,
+        fecha,
+        hora,
+        timestamp: new Date(),
+      });
+      setToast({ message: 'Horario guardado correctamente', type: 'success' });
+      setServicio('');
+      setFecha('');
+      setHora('');
+    } catch (err) {
+      console.error(err);
+      setToast({ message: 'Hubo un error al guardar', type: 'error' });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -52,7 +70,16 @@ export default function BarberScheduleForm() {
       </select>
       <input type="date" className="border p-2 rounded" value={fecha} onChange={e => setFecha(e.target.value)} />
       <input type="time" className="border p-2 rounded" value={hora} onChange={e => setHora(e.target.value)} />
-      <button onClick={guardar} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Agregar horario</button>
+      <button onClick={guardar} className="btn btn-primary" disabled={loading}>
+        {loading ? <span className="loading loading-spinner"></span> : 'Agregar horario'}
+      </button>
+      {toast.message && (
+        <div className="toast toast-top toast-end">
+          <div className={`alert ${toast.type === 'error' ? 'alert-error' : 'alert-success'}`}>
+            <span>{toast.message}</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

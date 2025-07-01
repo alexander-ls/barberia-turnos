@@ -122,6 +122,7 @@ export default function TurnoForm() {
       hora,
       servicio,
       barbero,
+      estado: 'pendiente',
       userId,
       timestamp: new Date(),
     });

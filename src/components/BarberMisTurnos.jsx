@@ -81,7 +81,7 @@ export default function BarberMisTurnos() {
         <div
           ref={tabsRef}
           role="tablist"
-          className="tabs tabs-bordered flex-1 overflow-x-auto whitespace-nowrap scroll-smooth"
+          className="tabs tabs-boxed flex-1 overflow-x-auto whitespace-nowrap scroll-smooth"
         >
           {dates.map(date => (
             <button

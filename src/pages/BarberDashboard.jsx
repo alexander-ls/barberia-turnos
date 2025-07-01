@@ -14,7 +14,9 @@ export default function BarberDashboard() {
         <UserMenu />
       </div>
 
-      <ul className="menu menu-horizontal bg-base-200 rounded-box">
+      <div className="divider"></div>
+
+      <ul className="menu menu-horizontal bg-base-200 rounded-box border border-base-300 shadow">
         <li>
           <a
             onClick={() => setSection('cargar')}
@@ -41,8 +43,10 @@ export default function BarberDashboard() {
         </li>
       </ul>
 
+      <div className="divider"></div>
+
       {section === 'cargar' && (
-        <div className="card bg-base-100 shadow">
+        <div className="card bg-base-100 shadow border border-base-300">
           <div className="card-body">
             <h3 className="card-title">Cargar horarios disponibles</h3>
             <BarberScheduleForm />
@@ -51,7 +55,7 @@ export default function BarberDashboard() {
       )}
 
       {section === 'cargados' && (
-        <div className="card bg-base-100 shadow">
+        <div className="card bg-base-100 shadow border border-base-300">
           <div className="card-body">
             <h3 className="card-title">Horarios cargados</h3>
             <BarberScheduleList />
@@ -60,7 +64,7 @@ export default function BarberDashboard() {
       )}
 
       {section === 'turnos' && (
-        <div className="card bg-base-100 shadow">
+        <div className="card bg-base-100 shadow border border-base-300">
           <div className="card-body">
             <h3 className="card-title">Mis turnos asignados</h3>
             <BarberMisTurnos />

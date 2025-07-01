@@ -9,6 +9,7 @@ import {
   where,
 } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
+import { formatHoraBogota } from '../utils/time';
 
 export default function TurnosList() {
   const [turnos, setTurnos] = useState([]);
@@ -52,7 +53,7 @@ export default function TurnosList() {
               </button>
             </div>
             <p>Fecha: {turno.fecha}</p>
-            <p>Hora: {turno.hora}</p>
+            <p>Hora: {formatHoraBogota(turno.hora)}</p>
             <p>Servicio: {turno.servicio}</p>
             <p>Barbero: {turno.barbero}</p>
           </div>

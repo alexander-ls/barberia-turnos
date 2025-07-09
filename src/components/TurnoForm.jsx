@@ -10,7 +10,7 @@ import {
 } from 'firebase/firestore';
 import { formatHoraBogota } from '../utils/time';
 
-export default function TurnoForm() {
+export default function TurnoForm({ showSteps = false }) {
   const [searchParams] = useSearchParams();
   const servicioQuery = searchParams.get('servicio') || '';
   const [servicio, setServicio] = useState(servicioQuery);
@@ -27,6 +27,16 @@ export default function TurnoForm() {
   const [turnosPorHora, setTurnosPorHora] = useState({});
   const [barberosOcupados, setBarberosOcupados] = useState([]);
   const [exito, setExito] = useState(false);
+
+  const currentStep = !servicio
+    ? 1
+    : !fecha
+      ? 2
+      : !hora
+        ? 3
+        : !barbero
+          ? 4
+          : 5;
 
   useEffect(() => {
     if (servicioQuery) setServicio(servicioQuery);
@@ -163,6 +173,15 @@ export default function TurnoForm() {
 
   return (
     <div className="flex flex-col space-y-2 mb-4">
+      {showSteps && (
+        <ul className="steps w-full mb-4">
+          <li className={`step ${currentStep >= 1 ? 'step-primary' : ''}`}>Servicio</li>
+          <li className={`step ${currentStep >= 2 ? 'step-primary' : ''}`}>Fecha</li>
+          <li className={`step ${currentStep >= 3 ? 'step-primary' : ''}`}>Hora</li>
+          <li className={`step ${currentStep >= 4 ? 'step-primary' : ''}`}>Barbero</li>
+          <li className={`step ${currentStep >= 5 ? 'step-primary' : ''}`}>Datos</li>
+        </ul>
+      )}
       {servicio && fecha && horasDisponibles.length === 0 && (
         <div role="alert" className="alert alert-warning">
           <span>Sin turnos disponibles para ese día</span>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { auth, db } from '../auth/FirebaseConfig';
 import {
   collection,
@@ -10,7 +11,9 @@ import {
 import { formatHoraBogota } from '../utils/time';
 
 export default function TurnoForm() {
-  const [servicio, setServicio] = useState('');
+  const [searchParams] = useSearchParams();
+  const servicioQuery = searchParams.get('servicio') || '';
+  const [servicio, setServicio] = useState(servicioQuery);
   const [fecha, setFecha] = useState('');
   const [hora, setHora] = useState('');
   const [nombre, setNombre] = useState('');
@@ -24,6 +27,10 @@ export default function TurnoForm() {
   const [turnosPorHora, setTurnosPorHora] = useState({});
   const [barberosOcupados, setBarberosOcupados] = useState([]);
   const [exito, setExito] = useState(false);
+
+  useEffect(() => {
+    if (servicioQuery) setServicio(servicioQuery);
+  }, [servicioQuery]);
 
   useEffect(() => {
     const unsubServicios = onSnapshot(collection(db, 'servicios'), snap => {

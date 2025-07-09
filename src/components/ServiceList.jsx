@@ -13,6 +13,7 @@ export default function ServiceList() {
   const [editId, setEditId] = useState(null);
   const [editNombre, setEditNombre] = useState('');
   const [editPrecio, setEditPrecio] = useState('');
+  const [editDescripcion, setEditDescripcion] = useState('');
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, 'servicios'), (snapshot) => {
@@ -25,12 +26,14 @@ export default function ServiceList() {
     setEditId(servicio.id);
     setEditNombre(servicio.nombre);
     setEditPrecio(servicio.precio || '');
+    setEditDescripcion(servicio.descripcion || '');
   };
 
   const cancelarEdicion = () => {
     setEditId(null);
     setEditNombre('');
     setEditPrecio('');
+    setEditDescripcion('');
   };
 
   const guardarEdicion = async () => {
@@ -38,6 +41,7 @@ export default function ServiceList() {
     await updateDoc(doc(db, 'servicios', editId), {
       nombre: editNombre,
       precio: parseFloat(editPrecio),
+      descripcion: editDescripcion,
     });
     cancelarEdicion();
   };
@@ -63,6 +67,11 @@ export default function ServiceList() {
                 value={editPrecio}
                 onChange={(e) => setEditPrecio(e.target.value)}
               />
+              <textarea
+                className="border p-1 rounded w-full"
+                value={editDescripcion}
+                onChange={(e) => setEditDescripcion(e.target.value)}
+              />
               <div className="flex justify-end space-x-2">
                 <button onClick={guardarEdicion} className="btn btn-sm btn-primary">
                   Guardar
@@ -76,25 +85,30 @@ export default function ServiceList() {
               </div>
             </div>
           ) : (
-            <div className="flex justify-between items-center">
-              <span>
-                {servicio.nombre}
-                {servicio.precio ? ` - $${servicio.precio}` : ''}
-              </span>
-              <div className="space-x-2">
-                <button
-                  onClick={() => comenzarEdicion(servicio)}
-                  className="text-blue-600 hover:underline"
-                >
-                  Editar
-                </button>
-                <button
-                  onClick={() => eliminarServicio(servicio.id)}
-                  className="text-red-600 hover:underline"
-                >
-                  Eliminar
-                </button>
+            <div>
+              <div className="flex justify-between items-center">
+                <span>
+                  {servicio.nombre}
+                  {servicio.precio ? ` - $${servicio.precio}` : ''}
+                </span>
+                <div className="space-x-2">
+                  <button
+                    onClick={() => comenzarEdicion(servicio)}
+                    className="text-blue-600 hover:underline"
+                  >
+                    Editar
+                  </button>
+                  <button
+                    onClick={() => eliminarServicio(servicio.id)}
+                    className="text-red-600 hover:underline"
+                  >
+                    Eliminar
+                  </button>
+                </div>
               </div>
+              {servicio.descripcion && (
+                <p className="text-sm opacity-80 mt-1">{servicio.descripcion}</p>
+              )}
             </div>
           )}
         </div>

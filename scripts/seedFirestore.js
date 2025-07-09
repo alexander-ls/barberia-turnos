@@ -15,8 +15,8 @@ const barbers = [
 ];
 
 const services = [
-  { nombre: 'Corte de pelo', precio: 10 },
-  { nombre: 'Afeitado', precio: 5 },
+  { nombre: 'Corte de pelo', precio: 10, descripcion: 'Corte profesional adaptado a tu estilo' },
+  { nombre: 'Afeitado', precio: 5, descripcion: 'Afeitado clásico y cuidado de la barba' },
 ];
 
 const slots = [

@@ -34,7 +34,7 @@ export default function Landing() {
       </header>
       <section className="relative hero min-h-[60vh] overflow-hidden">
         <img
-          src={hero}
+          src='https://images.pexels.com/photos/1813272/pexels-photo-1813272.jpeg'
           alt="Barbería"
           className="absolute inset-0 w-full h-full object-cover opacity-40"
         />

@@ -18,7 +18,11 @@ export default function BarbersPublic() {
       <h1 className="text-3xl font-bold text-center mb-6">Nuestros Barberos</h1>
       <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
         {barberos.map(b => (
-          <Link key={b.id} to={`/barberos/${b.id}`} className="card bg-base-200">
+          <Link
+            key={b.id}
+            to={`/barberos/${b.id}`}
+            className="card bg-base-200 rounded-lg shadow transition-transform duration-300 hover:scale-105 hover:shadow-lg"
+          >
             <div className="card-body items-center text-center">
               <div className="avatar">
                 <div className="w-24 rounded-full">

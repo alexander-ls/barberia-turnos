@@ -65,13 +65,16 @@ export default function Landing() {
         <h2 className="text-3xl font-bold text-center">Nuestros Servicios</h2>
         <div className="grid md:grid-cols-2 gap-6">
           {servicios.slice(0,4).map(s => (
-            <div key={s.id} className="card bg-base-200">
+            <div
+              key={s.id}
+              className="card bg-base-200 rounded-lg shadow transition-transform duration-300 hover:scale-105 hover:shadow-lg"
+            >
               <div className="card-body flex-row items-center justify-between">
                 <div>
                   <h3 className="card-title">{s.nombre}</h3>
                   {s.precio && <p className="text-lg">${s.precio}</p>}
                 </div>
-               <img className='w-32 h-32' src="https://cdn-icons-png.flaticon.com/512/7338/7338646.png"></img>
+                <img className='w-32 h-32' src="https://cdn-icons-png.flaticon.com/512/7338/7338646.png"></img>
               </div>
             </div>
           ))}
@@ -86,7 +89,11 @@ export default function Landing() {
         <h2 className="text-3xl font-bold text-center">Conoce a Nuestros Barberos</h2>
         <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 justify-center">
           {barberos.slice(0,3).map(b => (
-            <Link key={b.id} to={`/barberos/${b.id}`} className="card bg-base-200">
+            <Link
+              key={b.id}
+              to={`/barberos/${b.id}`}
+              className="card bg-base-200 rounded-lg shadow transition-transform duration-300 hover:scale-105 hover:shadow-lg"
+            >
               <div className="card-body items-center text-center">
                 <div className="avatar">
                   <div className="w-24 rounded-full">

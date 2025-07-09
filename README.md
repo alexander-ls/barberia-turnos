@@ -22,3 +22,7 @@ node scripts/seedFirestore.js
 ```
 
 This will populate example records for barbers, services, availability slots and appointments.
+
+## Calendar view
+
+The barber dashboard now uses **react-calendar** to display loaded schedules. Run `npm install` to install the new dependency before building the project.

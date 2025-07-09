@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import BarberMisTurnos from '../components/BarberMisTurnos';
 import BarberScheduleForm from '../components/BarberScheduleForm';
-import BarberScheduleList from '../components/BarberScheduleList';
+import BarberScheduleCalendar from '../components/BarberScheduleCalendar';
 import UserMenu from '../components/UserMenu';
 import Sidebar from '../components/Sidebar';
 import { CalendarIcon, ClockIcon, ListIcon } from '../icons';
@@ -50,7 +50,7 @@ export default function BarberDashboard() {
         <div className="card bg-base-100 shadow border border-base-300">
           <div className="card-body">
             <h3 className="card-title">Horarios cargados</h3>
-            <BarberScheduleList />
+            <BarberScheduleCalendar />
           </div>
         </div>
       )}

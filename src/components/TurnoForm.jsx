@@ -174,6 +174,7 @@ export default function TurnoForm({ showSteps = false }) {
   return (
     <div className="flex flex-col space-y-2 mb-4">
       {showSteps && (
+        <div data-theme="corporate"> 
         <ul className="steps w-full mb-4">
           <li className={`step ${currentStep >= 1 ? 'step-primary' : ''}`}>Servicio</li>
           <li className={`step ${currentStep >= 2 ? 'step-primary' : ''}`}>Fecha</li>
@@ -181,6 +182,7 @@ export default function TurnoForm({ showSteps = false }) {
           <li className={`step ${currentStep >= 4 ? 'step-primary' : ''}`}>Barbero</li>
           <li className={`step ${currentStep >= 5 ? 'step-primary' : ''}`}>Datos</li>
         </ul>
+        </div>
       )}
       {servicio && fecha && horasDisponibles.length === 0 && (
         <div role="alert" className="alert alert-warning">

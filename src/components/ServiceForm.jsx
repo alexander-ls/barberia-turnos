@@ -6,6 +6,7 @@ export default function ServiceForm() {
   const [nombre, setNombre] = useState('');
   const [precio, setPrecio] = useState('');
   const [descripcion, setDescripcion] = useState('');
+  const [imagen, setImagen] = useState('');
 
   const guardarServicio = async () => {
     if (!nombre || !precio) return;
@@ -13,11 +14,13 @@ export default function ServiceForm() {
       nombre,
       precio: parseFloat(precio),
       descripcion,
+      imagen,
       timestamp: new Date(),
     });
     setNombre('');
     setPrecio('');
     setDescripcion('');
+    setImagen('');
   };
 
   return (
@@ -40,6 +43,12 @@ export default function ServiceForm() {
         value={descripcion}
         onChange={(e) => setDescripcion(e.target.value)}
         placeholder="Descripción"
+      />
+      <input
+        className="border p-2 rounded"
+        value={imagen}
+        onChange={(e) => setImagen(e.target.value)}
+        placeholder="URL de la imagen"
       />
       <button
         onClick={guardarServicio}

@@ -4,6 +4,7 @@ import { db } from '../auth/FirebaseConfig';
 import hero from '../assets/barber.svg';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import Navbar from '../components/Navbar';
 
 export default function Landing() {
   const [servicios, setServicios] = useState([]);
@@ -24,14 +25,8 @@ export default function Landing() {
 
   return (
     <div>
-      <header className="navbar bg-base-200 justify-between px-4">
-        <Link to="/" className="btn btn-ghost text-xl">Barber Shop BEXS</Link>
-        <nav className="space-x-2">
-          <Link to="/servicios" className="btn btn-ghost btn-sm">Servicios</Link>
-          <Link to="/barberos" className="btn btn-ghost btn-sm">Barberos</Link>
-          <a href="#/login" className="btn btn-outline btn-sm">Iniciar sesión</a>
-        </nav>
-      </header>
+      <Navbar />
+      <div className="pt-16">
       <section className="relative hero min-h-[60vh] overflow-hidden">
         <img
           src='https://images.pexels.com/photos/1813272/pexels-photo-1813272.jpeg'
@@ -113,6 +108,7 @@ export default function Landing() {
           <Link to="/barberos" className="btn btn-primary">Ver todos</Link>
         </div>
       </section>
+      </div>
     </div>
   );
 }

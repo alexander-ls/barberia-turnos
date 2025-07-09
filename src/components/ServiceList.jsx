@@ -14,6 +14,7 @@ export default function ServiceList() {
   const [editNombre, setEditNombre] = useState('');
   const [editPrecio, setEditPrecio] = useState('');
   const [editDescripcion, setEditDescripcion] = useState('');
+  const [editImagen, setEditImagen] = useState('');
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, 'servicios'), (snapshot) => {
@@ -27,6 +28,7 @@ export default function ServiceList() {
     setEditNombre(servicio.nombre);
     setEditPrecio(servicio.precio || '');
     setEditDescripcion(servicio.descripcion || '');
+    setEditImagen(servicio.imagen || '');
   };
 
   const cancelarEdicion = () => {
@@ -34,6 +36,7 @@ export default function ServiceList() {
     setEditNombre('');
     setEditPrecio('');
     setEditDescripcion('');
+    setEditImagen('');
   };
 
   const guardarEdicion = async () => {
@@ -42,6 +45,7 @@ export default function ServiceList() {
       nombre: editNombre,
       precio: parseFloat(editPrecio),
       descripcion: editDescripcion,
+      imagen: editImagen,
     });
     cancelarEdicion();
   };
@@ -67,11 +71,17 @@ export default function ServiceList() {
                 value={editPrecio}
                 onChange={(e) => setEditPrecio(e.target.value)}
               />
-              <textarea
-                className="border p-1 rounded w-full"
-                value={editDescripcion}
-                onChange={(e) => setEditDescripcion(e.target.value)}
-              />
+            <textarea
+              className="border p-1 rounded w-full"
+              value={editDescripcion}
+              onChange={(e) => setEditDescripcion(e.target.value)}
+            />
+            <input
+              className="border p-1 rounded w-full"
+              value={editImagen}
+              onChange={(e) => setEditImagen(e.target.value)}
+              placeholder="URL de la imagen"
+            />
               <div className="flex justify-end space-x-2">
                 <button onClick={guardarEdicion} className="btn btn-sm btn-primary">
                   Guardar
@@ -106,6 +116,13 @@ export default function ServiceList() {
                   </button>
                 </div>
               </div>
+              {servicio.imagen && (
+                <img
+                  src={servicio.imagen}
+                  alt={servicio.nombre}
+                  className="w-20 h-20 object-contain mt-2"
+                />
+              )}
               {servicio.descripcion && (
                 <p className="text-sm opacity-80 mt-1">{servicio.descripcion}</p>
               )}

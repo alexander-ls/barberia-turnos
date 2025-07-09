@@ -25,8 +25,8 @@ export default function PublicServices() {
             <figure className="px-4 pt-4">
               <img
                 className="w-24 h-24 object-contain"
-                src="https://cdn-icons-png.flaticon.com/512/7338/7338646.png"
-                alt="Icono servicio"
+                src={s.imagen || 'https://cdn-icons-png.flaticon.com/512/7338/7338646.png'}
+                alt={s.nombre}
               />
             </figure>
             <div className="card-body items-center text-center space-y-2">

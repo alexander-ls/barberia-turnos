@@ -74,7 +74,11 @@ export default function Landing() {
                   <h3 className="card-title">{s.nombre}</h3>
                   {s.precio && <p className="text-lg">${s.precio}</p>}
                 </div>
-                <img className='w-32 h-32' src="https://cdn-icons-png.flaticon.com/512/7338/7338646.png"></img>
+                <img
+                  className='w-32 h-32'
+                  src={s.imagen || 'https://cdn-icons-png.flaticon.com/512/7338/7338646.png'}
+                  alt={s.nombre}
+                />
               </div>
             </div>
           ))}

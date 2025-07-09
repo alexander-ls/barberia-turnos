@@ -2,7 +2,7 @@ import { useState } from 'react';
 import TurnoForm from '../components/TurnoForm';
 import AllTurnosList from '../components/AllTurnosList';
 import BarberTurnos from '../components/BarberTurnos';
-import AllBarberSchedules from '../components/AllBarberSchedules';
+import AdminScheduleCalendar from '../components/AdminScheduleCalendar';
 import UserMenu from '../components/UserMenu';
 import Sidebar from '../components/Sidebar';
 import {
@@ -83,7 +83,7 @@ export default function AdminDashboard() {
           <div className="card bg-base-100 shadow border border-base-300">
             <div className="card-body">
               <h3 className="card-title">Horarios cargados</h3>
-              <AllBarberSchedules />
+              <AdminScheduleCalendar />
             </div>
           </div>
         )}

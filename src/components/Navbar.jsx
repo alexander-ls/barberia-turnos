@@ -26,7 +26,10 @@ export default function Navbar() {
         <Link to="/barberos" className="btn btn-ghost btn-sm">
           Barberos
         </Link>
-        <a href="#/login" className="btn btn-primary btn-sm">
+        <Link to="/agendar" className="btn btn-primary btn-sm">
+          Agendar
+        </Link>
+        <a href="#/login" className="btn btn-ghost btn-sm">
           Iniciar sesión
         </a>
       </nav>

@@ -10,6 +10,6 @@ export default {
   },
   plugins: [daisyui],
   daisyui: {
-    themes: ["wireframe"], 
+    themes: ["wireframe", "corporate"], 
   },
 };

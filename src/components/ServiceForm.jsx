@@ -5,16 +5,19 @@ import { collection, addDoc } from 'firebase/firestore';
 export default function ServiceForm() {
   const [nombre, setNombre] = useState('');
   const [precio, setPrecio] = useState('');
+  const [descripcion, setDescripcion] = useState('');
 
   const guardarServicio = async () => {
     if (!nombre || !precio) return;
     await addDoc(collection(db, 'servicios'), {
       nombre,
       precio: parseFloat(precio),
+      descripcion,
       timestamp: new Date(),
     });
     setNombre('');
     setPrecio('');
+    setDescripcion('');
   };
 
   return (
@@ -31,6 +34,12 @@ export default function ServiceForm() {
         value={precio}
         onChange={(e) => setPrecio(e.target.value)}
         placeholder="Precio"
+      />
+      <textarea
+        className="border p-2 rounded"
+        value={descripcion}
+        onChange={(e) => setDescripcion(e.target.value)}
+        placeholder="Descripción"
       />
       <button
         onClick={guardarServicio}

@@ -17,7 +17,10 @@ export default function PublicServices() {
       <h1 className="text-3xl font-bold text-center">Servicios</h1>
       <div className="grid md:grid-cols-2 gap-4">
         {servicios.map(s => (
-          <div key={s.id} className="card bg-base-200">
+          <div
+            key={s.id}
+            className="card bg-base-200 rounded-lg shadow transition-transform duration-300 hover:scale-105 hover:shadow-lg"
+          >
             <div className="card-body flex-row items-center justify-between">
               <div>
                 <h2 className="card-title">{s.nombre}</h2>

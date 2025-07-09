@@ -25,4 +25,4 @@ This will populate example records for barbers, services, availability slots and
 
 ## Calendar view
 
-The barber dashboard now uses **react-calendar** to display loaded schedules. Run `npm install` to install the new dependency before building the project.
+The barber and admin dashboards now use **react-calendar** to visualize loaded schedules. Run `npm install` to install the dependency before building the project.

@@ -10,8 +10,18 @@ admin.initializeApp({
 const db = admin.firestore();
 
 const barbers = [
-  { nombre: 'Juan', email: 'juan@example.com', telefono: '111-111' },
-  { nombre: 'Maria', email: 'maria@example.com', telefono: '222-222' },
+  {
+    nombre: 'Juan',
+    email: 'juan@example.com',
+    telefono: '111-111',
+    imagen: 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg',
+  },
+  {
+    nombre: 'Maria',
+    email: 'maria@example.com',
+    telefono: '222-222',
+    imagen: 'https://img.daisyui.com/images/stock/photo-1564694202779-bc908c327862.jpg',
+  },
 ];
 
 const services = [

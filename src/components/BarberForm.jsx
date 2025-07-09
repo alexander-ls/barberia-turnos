@@ -9,6 +9,7 @@ export default function BarberForm() {
   const [email, setEmail] = useState('');
   const [telefono, setTelefono] = useState('');
   const [password, setPassword] = useState('');
+  const [imagen, setImagen] = useState('');
 
   const guardarBarbero = async () => {
     if (!nombre || !email || !telefono || !password) return;
@@ -22,6 +23,7 @@ export default function BarberForm() {
       nombre,
       email,
       telefono,
+      imagen,
       timestamp: new Date(),
     });
 
@@ -29,6 +31,7 @@ export default function BarberForm() {
     setEmail('');
     setTelefono('');
     setPassword('');
+    setImagen('');
   };
 
   return (
@@ -51,6 +54,12 @@ export default function BarberForm() {
         value={telefono}
         onChange={(e) => setTelefono(e.target.value)}
         placeholder="Teléfono"
+      />
+      <input
+        className="border p-2 rounded"
+        value={imagen}
+        onChange={(e) => setImagen(e.target.value)}
+        placeholder="URL de la imagen"
       />
       <input
         className="border p-2 rounded"

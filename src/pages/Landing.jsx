@@ -25,7 +25,7 @@ export default function Landing() {
   return (
     <div>
       <header className="navbar bg-base-200 justify-between px-4">
-        <Link to="/" className="btn btn-ghost text-xl">Barbería</Link>
+        <Link to="/" className="btn btn-ghost text-xl">Barber Shop BEXS</Link>
         <nav className="space-x-2">
           <Link to="/servicios" className="btn btn-ghost btn-sm">Servicios</Link>
           <Link to="/barberos" className="btn btn-ghost btn-sm">Barberos</Link>
@@ -46,7 +46,7 @@ export default function Landing() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h1 className="mb-4 text-5xl font-bold">Barbería</h1>
+            <h1 className="mb-4 text-5xl font-bold">Barber Shop BEXS</h1>
             <p className="mb-4">
               Los mejores estilos y cortes profesionales para ti.
             </p>

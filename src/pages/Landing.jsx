@@ -3,6 +3,7 @@ import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../auth/FirebaseConfig';
 import hero from '../assets/barber.svg';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 export default function Landing() {
   const [servicios, setServicios] = useState([]);
@@ -31,19 +32,33 @@ export default function Landing() {
           <a href="#/login" className="btn btn-outline btn-sm">Iniciar sesión</a>
         </nav>
       </header>
-      <section
-        className="relative hero min-h-[60vh] bg-cover bg-center"
-        style={{ backgroundImage: `url(${hero})` }}
-      >
-        <div className="absolute inset-0 bg-black opacity-60" />
+      <section className="relative hero min-h-[60vh] overflow-hidden">
+        <img
+          src={hero}
+          alt="Barbería"
+          className="absolute inset-0 w-full h-full object-cover opacity-40"
+        />
+        <div className="absolute inset-0 bg-black/60" />
         <div className="relative hero-content text-center text-neutral-content">
-          <div className="max-w-md">
+          <motion.div
+            className="max-w-md"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
             <h1 className="mb-4 text-5xl font-bold">Barbería</h1>
             <p className="mb-4">
               Los mejores estilos y cortes profesionales para ti.
             </p>
-            <a href="#/agendar" className="btn btn-primary">Agendar Turno</a>
-          </div>
+            <motion.a
+              href="#/agendar"
+              className="btn btn-primary"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Agendar Turno
+            </motion.a>
+          </motion.div>
         </div>
       </section>
       <section id="servicios" className="py-16 px-6 max-w-6xl mx-auto space-y-6">

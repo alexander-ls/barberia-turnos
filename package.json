@@ -18,7 +18,7 @@
     "framer-motion": "^10.16.4",
     "react-calendar": "^4.2.0",
     "react-qr-code": "^2.0.6",
-    "react-qr-reader": "^3.0.0"
+    "@yudiel/react-qr-scanner": "^1.1.6"
   },
   "devDependencies": {
     "gh-pages": "^5.0.0",

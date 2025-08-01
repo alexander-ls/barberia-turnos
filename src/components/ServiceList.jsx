@@ -10,126 +10,154 @@ import {
 
 export default function ServiceList() {
   const [servicios, setServicios] = useState([]);
-  const [editId, setEditId] = useState(null);
-  const [editNombre, setEditNombre] = useState('');
-  const [editPrecio, setEditPrecio] = useState('');
-  const [editDescripcion, setEditDescripcion] = useState('');
-  const [editImagen, setEditImagen] = useState('');
+  const [editing, setEditing] = useState(null);
+  const [form, setForm] = useState({
+    nombre: '',
+    precio: '',
+    descripcion: '',
+    imagen: '',
+    categoria: '',
+  });
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, 'servicios'), (snapshot) => {
-      setServicios(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+    const unsub = onSnapshot(collection(db, 'servicios'), snap => {
+      setServicios(snap.docs.map(d => ({ id: d.id, ...d.data() })));
     });
-    return () => unsubscribe();
+    return () => unsub();
   }, []);
 
-  const comenzarEdicion = (servicio) => {
-    setEditId(servicio.id);
-    setEditNombre(servicio.nombre);
-    setEditPrecio(servicio.precio || '');
-    setEditDescripcion(servicio.descripcion || '');
-    setEditImagen(servicio.imagen || '');
-  };
-
-  const cancelarEdicion = () => {
-    setEditId(null);
-    setEditNombre('');
-    setEditPrecio('');
-    setEditDescripcion('');
-    setEditImagen('');
-  };
-
-  const guardarEdicion = async () => {
-    if (!editNombre || !editPrecio) return;
-    await updateDoc(doc(db, 'servicios', editId), {
-      nombre: editNombre,
-      precio: parseFloat(editPrecio),
-      descripcion: editDescripcion,
-      imagen: editImagen,
+  const openEdit = servicio => {
+    setEditing(servicio);
+    setForm({
+      nombre: servicio.nombre || '',
+      precio: servicio.precio || '',
+      descripcion: servicio.descripcion || '',
+      imagen: servicio.imagen || '',
+      categoria: servicio.categoria || '',
     });
-    cancelarEdicion();
   };
 
-  const eliminarServicio = async (id) => {
+  const closeEdit = () => setEditing(null);
+
+  const saveEdit = async () => {
+    if (!form.nombre || !form.precio) return;
+    await updateDoc(doc(db, 'servicios', editing.id), {
+      nombre: form.nombre,
+      precio: parseFloat(form.precio),
+      descripcion: form.descripcion,
+      imagen: form.imagen,
+      categoria: form.categoria,
+    });
+    closeEdit();
+  };
+
+  const eliminarServicio = async id => {
     await deleteDoc(doc(db, 'servicios', id));
   };
 
+  const badgeClass = cat => {
+    switch (cat) {
+      case 'Corte':
+        return 'badge-primary';
+      case 'Afeitado':
+        return 'badge-secondary';
+      case 'Color':
+        return 'badge-accent';
+      default:
+        return 'badge-ghost';
+    }
+  };
+
   return (
-    <div className="grid gap-4">
-      {servicios.map((servicio) => (
-        <div key={servicio.id} className="card bg-base-100 shadow-md p-4">
-          {editId === servicio.id ? (
-            <div className="space-y-2">
-              <input
-                className="border p-1 rounded w-full"
-                value={editNombre}
-                onChange={(e) => setEditNombre(e.target.value)}
-              />
-              <input
-                className="border p-1 rounded w-full"
-                type="number"
-                value={editPrecio}
-                onChange={(e) => setEditPrecio(e.target.value)}
-              />
-            <textarea
-              className="border p-1 rounded w-full"
-              value={editDescripcion}
-              onChange={(e) => setEditDescripcion(e.target.value)}
-            />
-            <input
-              className="border p-1 rounded w-full"
-              value={editImagen}
-              onChange={(e) => setEditImagen(e.target.value)}
-              placeholder="URL de la imagen"
-            />
-              <div className="flex justify-end space-x-2">
-                <button onClick={guardarEdicion} className="btn btn-sm btn-primary">
-                  Guardar
+    <div className="overflow-x-auto">
+      <table className="table table-zebra">
+        <thead>
+          <tr>
+            <th>Servicio</th>
+            <th>Categoría</th>
+            <th className="text-right">$</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {servicios.map(s => (
+            <tr key={s.id}>
+              <td>{s.nombre}</td>
+              <td>
+                {s.categoria ? (
+                  <span className={`badge ${badgeClass(s.categoria)}`}>{s.categoria}</span>
+                ) : (
+                  '-'
+                )}
+              </td>
+              <td className="text-right">
+                {s.precio ? `$${s.precio}` : '-'}
+              </td>
+              <td className="space-x-2">
+                <button
+                  onClick={() => openEdit(s)}
+                  className="btn btn-xs btn-outline"
+                >
+                  Editar
                 </button>
                 <button
-                  onClick={cancelarEdicion}
-                  className="btn btn-sm"
+                  onClick={() => eliminarServicio(s.id)}
+                  className="btn btn-xs btn-ghost text-red-600"
                 >
-                  Cancelar
+                  Eliminar
                 </button>
-              </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {editing && (
+        <div className="modal modal-open">
+          <div className="modal-box space-y-2">
+            <h3 className="font-bold text-lg mb-2">Editar servicio</h3>
+            <input
+              className="input input-bordered w-full"
+              value={form.nombre}
+              onChange={e => setForm({ ...form, nombre: e.target.value })}
+              placeholder="Nombre"
+            />
+            <input
+              className="input input-bordered w-full"
+              type="number"
+              value={form.precio}
+              onChange={e => setForm({ ...form, precio: e.target.value })}
+              placeholder="Precio"
+            />
+            <input
+              className="input input-bordered w-full"
+              value={form.categoria}
+              onChange={e => setForm({ ...form, categoria: e.target.value })}
+              placeholder="Categoría"
+            />
+            <textarea
+              className="textarea textarea-bordered w-full"
+              value={form.descripcion}
+              onChange={e => setForm({ ...form, descripcion: e.target.value })}
+              placeholder="Descripción"
+            />
+            <input
+              className="input input-bordered w-full"
+              value={form.imagen}
+              onChange={e => setForm({ ...form, imagen: e.target.value })}
+              placeholder="URL de la imagen"
+            />
+            <div className="modal-action">
+              <button onClick={saveEdit} className="btn btn-primary btn-sm">
+                Guardar
+              </button>
+              <button onClick={closeEdit} className="btn btn-sm">
+                Cancelar
+              </button>
             </div>
-          ) : (
-            <div>
-              <div className="flex justify-between items-center">
-                <span>
-                  {servicio.nombre}
-                  {servicio.precio ? ` - $${servicio.precio}` : ''}
-                </span>
-                <div className="space-x-2">
-                  <button
-                    onClick={() => comenzarEdicion(servicio)}
-                    className="text-blue-600 hover:underline"
-                  >
-                    Editar
-                  </button>
-                  <button
-                    onClick={() => eliminarServicio(servicio.id)}
-                    className="text-red-600 hover:underline"
-                  >
-                    Eliminar
-                  </button>
-                </div>
-              </div>
-              {servicio.imagen && (
-                <img
-                  src={servicio.imagen}
-                  alt={servicio.nombre}
-                  className="w-20 h-20 object-contain mt-2"
-                />
-              )}
-              {servicio.descripcion && (
-                <p className="text-sm opacity-80 mt-1">{servicio.descripcion}</p>
-              )}
-            </div>
-          )}
+          </div>
         </div>
-      ))}
+      )}
     </div>
   );
 }

@@ -15,13 +15,19 @@ If you are developing a production application, we recommend using TypeScript wi
 
 1. Create a Firebase service account and download the JSON credential.
 2. Save the file as `service-account.json` in the project root or set the `GOOGLE_APPLICATION_CREDENTIALS` environment variable with the path to the file.
-3. Run the seeding script:
+3. Run the seeding script to crear nuevas disponibilidades:
 
 ```bash
 node scripts/seedFirestore.js
 ```
 
-This will populate example records for barbers, services, availability slots and appointments.
+This will populate availability slots for each barber.
+
+To remove all existing availabilities you can run:
+
+```bash
+node scripts/clearDisponibilidades.js
+```
 
 ## Calendar view
 

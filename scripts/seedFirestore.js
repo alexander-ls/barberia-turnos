@@ -9,42 +9,31 @@ admin.initializeApp({
 
 const db = admin.firestore();
 
-const barbers = [
-  {
-    nombre: 'Juan',
-    email: 'juan@example.com',
-    telefono: '111-111',
-    imagen: 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg',
-  },
-  {
-    nombre: 'Maria',
-    email: 'maria@example.com',
-    telefono: '222-222',
-    imagen: 'https://img.daisyui.com/images/stock/photo-1564694202779-bc908c327862.jpg',
-  },
+const barbers = ['Juan', 'Maria'];
+
+// Modifica estas fechas y horas según sea necesario
+const fechas = [
+  '2024-01-01',
+  '2024-01-02',
+  '2024-01-03',
+  '2024-01-04',
+  '2024-01-05',
 ];
 
-const services = [
-  { nombre: 'Corte de pelo', precio: 10, descripcion: 'Corte profesional adaptado a tu estilo' },
-  { nombre: 'Afeitado', precio: 5, descripcion: 'Afeitado clásico y cuidado de la barba' },
-];
+const horas = ['10:00', '11:00', '12:00', '13:00', '14:00'];
 
-const slots = [
-  { barbero: 'Juan', servicio: 'Corte de pelo', fecha: '2024-01-01', hora: '10:00' },
-  { barbero: 'Maria', servicio: 'Afeitado', fecha: '2024-01-01', hora: '11:00' },
-];
-
-const appointments = [
-  {
-    nombre: 'Pedro',
-    servicio: 'Corte de pelo',
-    fecha: '2024-01-01',
-    hora: '10:00',
-    barbero: 'Juan',
-    email: 'pedro@example.com',
-    telefono: '333-333',
-  },
-];
+// Se generarán 5 disponibilidades por cada barbero
+const slots = [];
+barbers.forEach((barbero) => {
+  fechas.forEach((fecha, index) => {
+    slots.push({
+      barbero,
+      servicio: 'Corte de pelo',
+      fecha,
+      hora: horas[index % horas.length],
+    });
+  });
+});
 
 async function seedCollection(name, data) {
   await Promise.all(
@@ -56,10 +45,7 @@ async function seedCollection(name, data) {
 
 async function main() {
   try {
-    await seedCollection('barberos', barbers);
-    await seedCollection('servicios', services);
     await seedCollection('disponibilidades', slots);
-    await seedCollection('turnos', appointments);
     console.log('Seeding completed');
   } catch (err) {
     console.error(err);

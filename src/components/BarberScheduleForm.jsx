@@ -8,16 +8,29 @@ import {
   where,
 } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
+import { formatHoraBogota } from '../utils/time';
 
 export default function BarberScheduleForm() {
   const [barbero, setBarbero] = useState('');
   const [servicio, setServicio] = useState('');
   const [fecha, setFecha] = useState('');
-  const [hora, setHora] = useState('');
+  const [horas, setHoras] = useState([]);
   const [servicios, setServicios] = useState([]);
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState({ message: '', type: '' });
-  const canSave = barbero && servicio && fecha && hora && !loading;
+  const canSave =
+    barbero && servicio && fecha && horas.length > 0 && !loading;
+
+  const hourTags = [];
+  for (let h = 8; h <= 20; h += 2) {
+    hourTags.push(`${String(h).padStart(2, '0')}:00`);
+  }
+
+  const toggleHora = h => {
+    setHoras(prev =>
+      prev.includes(h) ? prev.filter(x => x !== h) : [...prev, h]
+    );
+  };
 
   useEffect(() => {
     const unsubServicios = onSnapshot(collection(db, 'servicios'), snap => {
@@ -47,24 +60,28 @@ export default function BarberScheduleForm() {
   }, [toast]);
 
   const guardar = async () => {
-    if (!barbero || !servicio || !fecha || !hora) {
+    if (!barbero || !servicio || !fecha || horas.length === 0) {
       setToast({ message: 'Complete todos los campos', type: 'error' });
       return;
     }
     if (loading) return;
     try {
       setLoading(true);
-      await addDoc(collection(db, 'disponibilidades'), {
-        barbero,
-        servicio,
-        fecha,
-        hora,
-        timestamp: new Date(),
-      });
+      await Promise.all(
+        horas.map(h =>
+          addDoc(collection(db, 'disponibilidades'), {
+            barbero,
+            servicio,
+            fecha,
+            hora: h,
+            timestamp: new Date(),
+          })
+        )
+      );
       setToast({ message: 'Horario guardado correctamente', type: 'success' });
       setServicio('');
       setFecha('');
-      setHora('');
+      setHoras([]);
     } catch (err) {
       console.error(err);
       setToast({ message: 'Hubo un error al guardar', type: 'error' });
@@ -83,7 +100,18 @@ export default function BarberScheduleForm() {
         ))}
       </select>
       <input type="date" className="border p-2 rounded" value={fecha} onChange={e => setFecha(e.target.value)} />
-      <input type="time" className="border p-2 rounded" value={hora} onChange={e => setHora(e.target.value)} />
+      <div className="flex flex-wrap gap-2">
+        {hourTags.map(h => (
+          <button
+            key={h}
+            type="button"
+            onClick={() => toggleHora(h)}
+            className={`btn btn-sm ${horas.includes(h) ? 'btn-primary' : 'btn-outline'}`}
+          >
+            {formatHoraBogota(h)}
+          </button>
+        ))}
+      </div>
       <button onClick={guardar} className="btn btn-primary" disabled={!canSave}>
         {loading ? (
           <span className="loading loading-spinner"></span>

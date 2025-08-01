@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { QRCodeSVG } from 'qrcode.react';
+import QRCode from 'react-qr-code';
 import { useSearchParams } from 'react-router-dom';
 import { auth, db } from '../auth/FirebaseConfig';
 import {
@@ -239,7 +239,7 @@ export default function TurnoForm({ showSteps = false }) {
       )}
       {qrId && (
         <div className="flex justify-center pt-4">
-          <QRCodeSVG value={qrId} />
+          <QRCode value={qrId} />
         </div>
       )}
     </div>

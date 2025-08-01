@@ -32,7 +32,7 @@ export default function AdminDashboard() {
         )}
 
         {section === 'recientes' && (
-          <div className="card bg-base-100 shadow border border-base-300">
+          <div className="card bg-base-100 shadow border border-base-300 w-full max-w-4xl mx-auto">
             <div className="card-body">
               <h3 className="card-title">Turnos recientes</h3>
               <AllTurnosList />
@@ -41,7 +41,7 @@ export default function AdminDashboard() {
         )}
 
         {section === 'porBarbero' && (
-          <div className="card bg-base-100 shadow border border-base-300">
+          <div className="card bg-base-100 shadow border border-base-300 w-full max-w-4xl mx-auto">
             <div className="card-body">
               <h3 className="card-title">Turnos por barbero</h3>
               <BarberTurnos />

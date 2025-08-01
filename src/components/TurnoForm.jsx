@@ -5,6 +5,7 @@ import { auth, db } from '../auth/FirebaseConfig';
 import {
   collection,
   addDoc,
+  updateDoc,
   onSnapshot,
   query,
   where,
@@ -150,6 +151,7 @@ export default function TurnoForm({ showSteps = false }) {
       timestamp: new Date(),
     };
     const docRef = await addDoc(collection(db, 'turnos'), turno);
+    await updateDoc(docRef, { qrId: docRef.id });
     setQrId(docRef.id);
     try {
       await fetch(

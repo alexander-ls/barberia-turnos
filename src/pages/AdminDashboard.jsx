@@ -3,37 +3,13 @@ import TurnoForm from '../components/TurnoForm';
 import AllTurnosList from '../components/AllTurnosList';
 import BarberTurnos from '../components/BarberTurnos';
 import AdminScheduleCalendar from '../components/AdminScheduleCalendar';
-import UserMenu from '../components/UserMenu';
-import Sidebar from '../components/Sidebar';
-import {
-  CalendarIcon,
-  ListIcon,
-  UsersIcon,
-  ClockIcon,
-  ClipboardIcon,
-} from '../icons';
+import AdminLayout from '../layouts/AdminLayout';
+import { adminSections } from '../constants/adminSections';
 
 export default function AdminDashboard() {
   const [section, setSection] = useState('nuevo');
 
-  const sections = [
-    {
-      label: 'Turnos',
-      items: [
-        { id: 'nuevo', label: 'Nuevo turno', icon: CalendarIcon },
-        { id: 'recientes', label: 'Turnos recientes', icon: ListIcon },
-        { id: 'porBarbero', label: 'Turnos por barbero', icon: UsersIcon },
-        { id: 'horarios', label: 'Horarios cargados', icon: ClockIcon },
-      ],
-    },
-    {
-      label: 'Gestionar',
-      items: [
-        { id: 'servicios', label: 'Servicios', href: '#/admin/servicios', icon: ClipboardIcon },
-        { id: 'barberos', label: 'Barberos', href: '#/admin/barberos', icon: UsersIcon },
-      ],
-    },
-  ];
+  const sections = adminSections;
 
   const handleSelect = id => {
     if (id === 'servicios' || id === 'barberos') {
@@ -44,13 +20,7 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="flex">
-      <Sidebar sections={sections} current={section} onSelect={handleSelect} />
-      <div className="p-4 space-y-6 flex-1">
-        <div className="flex justify-between items-center">
-          <h2 className="text-2xl font-bold">Panel de Administración</h2>
-          <UserMenu />
-        </div>
+    <AdminLayout sections={sections} current={section} onSelect={handleSelect}>
 
         {section === 'nuevo' && (
           <div className="card bg-base-100 shadow border border-base-300 w-full max-w-md mx-auto">
@@ -87,7 +57,6 @@ export default function AdminDashboard() {
             </div>
           </div>
         )}
-      </div>
-    </div>
+    </AdminLayout>
   );
 }

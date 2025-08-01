@@ -1,9 +1,19 @@
 import BarberForm from '../components/BarberForm';
 import BarberList from '../components/BarberList';
+import AdminLayout from '../layouts/AdminLayout';
+import { adminSections } from '../constants/adminSections';
 
 export default function Barbers() {
+  const sections = adminSections;
+  const handleSelect = id => {
+    if (id === 'servicios' || id === 'barberos') {
+      window.location.hash = `/admin/${id}`;
+    } else {
+      window.location.hash = '/admin';
+    }
+  };
   return (
-    <div className="p-4 space-y-6">
+    <AdminLayout sections={sections} current="barberos" onSelect={handleSelect}>
       <h2 className="text-xl font-semibold">Gestionar Barberos</h2>
 
       <div className="card bg-base-100 shadow border border-base-300 w-full max-w-md mx-auto">
@@ -19,6 +29,6 @@ export default function Barbers() {
           <BarberList />
         </div>
       </div>
-    </div>
+    </AdminLayout>
   );
 }

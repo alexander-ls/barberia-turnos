@@ -4,7 +4,7 @@ import BarberScheduleForm from '../components/BarberScheduleForm';
 import BarberScheduleCalendar from '../components/BarberScheduleCalendar';
 import UserMenu from '../components/UserMenu';
 import Sidebar from '../components/Sidebar';
-import { CalendarIcon, ClockIcon, ListIcon } from '../icons';
+import { CalendarIcon, ClockIcon, ListIcon, ClipboardIcon } from '../icons';
 
 export default function BarberDashboard() {
   const [section, setSection] = useState('cargar');
@@ -21,6 +21,7 @@ export default function BarberDashboard() {
       label: 'Turnos',
       items: [
         { id: 'turnos', label: 'Turnos asignados', icon: ListIcon },
+        { id: 'scanner', label: 'Escanear turno', href: '#/scanner', icon: ClipboardIcon },
       ],
     },
   ];

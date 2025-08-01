@@ -1,9 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import QRCode from 'react-qr-code';
 import { useSearchParams } from 'react-router-dom';
 import { auth, db } from '../auth/FirebaseConfig';
 import {
   collection,
   addDoc,
+  updateDoc,
   onSnapshot,
   query,
   where,
@@ -27,6 +29,8 @@ export default function TurnoForm({ showSteps = false }) {
   const [turnosPorHora, setTurnosPorHora] = useState({});
   const [barberosOcupados, setBarberosOcupados] = useState([]);
   const [exito, setExito] = useState(false);
+  const [qrId, setQrId] = useState('');
+  const qrRef = useRef(null);
 
   const currentStep = !servicio
     ? 1
@@ -147,14 +151,16 @@ export default function TurnoForm({ showSteps = false }) {
       userId,
       timestamp: new Date(),
     };
-    await addDoc(collection(db, 'turnos'), turno);
+    const docRef = await addDoc(collection(db, 'turnos'), turno);
+    await updateDoc(docRef, { qrId: docRef.id });
+    setQrId(docRef.id);
     try {
       await fetch(
         'https://hook.us2.make.com/307slkl4v8t4p76yy91sugd5uql87t6d',
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(turno),
+          body: JSON.stringify({ ...turno, id: docRef.id }),
         }
       );
     } catch (err) {
@@ -169,6 +175,22 @@ export default function TurnoForm({ showSteps = false }) {
     setBarbero('');
     setEmail('');
     setTelefono('');
+  };
+
+  const descargarQR = () => {
+    const container = qrRef.current;
+    if (!container) return;
+    const svg = container.querySelector('svg');
+    if (!svg) return;
+    const serializer = new XMLSerializer();
+    const svgString = serializer.serializeToString(svg);
+    const blob = new Blob([svgString], { type: 'image/svg+xml' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `turno-${qrId}.svg`;
+    link.click();
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -232,6 +254,14 @@ export default function TurnoForm({ showSteps = false }) {
       {exito && (
         <div role="alert" className="alert alert-success">
           <span>Turno guardado</span>
+        </div>
+      )}
+      {qrId && (
+        <div className="flex flex-col items-center pt-4" ref={qrRef}>
+          <QRCode value={qrId} />
+          <button onClick={descargarQR} className="btn btn-sm mt-2">
+            Descargar QR
+          </button>
         </div>
       )}
     </div>

@@ -3,6 +3,7 @@ import { auth, db } from '../auth/FirebaseConfig';
 import { collection, onSnapshot, query, where, doc, updateDoc } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { getTodayBogota, formatHoraBogota } from '../utils/time';
+import QRCode from 'react-qr-code';
 
 export default function BarberMisTurnos() {
   const [turnos, setTurnos] = useState([]);
@@ -173,6 +174,9 @@ export default function BarberMisTurnos() {
               <p>
                 {t.fecha} {formatHoraBogota(t.hora)} - {t.servicio}
               </p>
+              <div className="flex justify-center">
+                <QRCode value={t.id} size={64} />
+              </div>
               <div className="space-x-2">
                 <button
                   disabled={(t.estado || 'pendiente') !== 'pendiente'}

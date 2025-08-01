@@ -96,7 +96,7 @@ export default function Landing() {
               <div className="card-body items-center text-center">
                 <div className="avatar">
                   <div className="w-24 rounded-full">
-                    <img src="https://img.daisyui.com/images/profile/demo/yellingcat@192.webp" />
+                    <img src={b.imagen} />
                   </div>
                 </div>
                 <h3 className="card-title">{b.nombre}</h3>

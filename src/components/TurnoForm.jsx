@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import QRCode from 'react-qr-code';
 import { useSearchParams } from 'react-router-dom';
 import { auth, db } from '../auth/FirebaseConfig';
@@ -30,6 +30,7 @@ export default function TurnoForm({ showSteps = false }) {
   const [barberosOcupados, setBarberosOcupados] = useState([]);
   const [exito, setExito] = useState(false);
   const [qrId, setQrId] = useState('');
+  const qrRef = useRef(null);
 
   const currentStep = !servicio
     ? 1
@@ -176,6 +177,22 @@ export default function TurnoForm({ showSteps = false }) {
     setTelefono('');
   };
 
+  const descargarQR = () => {
+    const container = qrRef.current;
+    if (!container) return;
+    const svg = container.querySelector('svg');
+    if (!svg) return;
+    const serializer = new XMLSerializer();
+    const svgString = serializer.serializeToString(svg);
+    const blob = new Blob([svgString], { type: 'image/svg+xml' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `turno-${qrId}.svg`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="flex flex-col space-y-2 mb-4">
       {showSteps && (
@@ -240,8 +257,11 @@ export default function TurnoForm({ showSteps = false }) {
         </div>
       )}
       {qrId && (
-        <div className="flex justify-center pt-4">
+        <div className="flex flex-col items-center pt-4" ref={qrRef}>
           <QRCode value={qrId} />
+          <button onClick={descargarQR} className="btn btn-sm mt-2">
+            Descargar QR
+          </button>
         </div>
       )}
     </div>

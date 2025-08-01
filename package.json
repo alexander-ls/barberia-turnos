@@ -16,7 +16,9 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.0.0",
     "framer-motion": "^10.16.4",
-    "react-calendar": "^4.2.0"
+    "react-calendar": "^4.2.0",
+    "qrcode.react": "^1.0.0",
+    "react-qr-reader": "^3.0.0"
   },
   "devDependencies": {
     "gh-pages": "^5.0.0",

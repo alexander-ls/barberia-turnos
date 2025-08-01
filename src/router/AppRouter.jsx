@@ -9,6 +9,7 @@ import BarberProfile from '../pages/BarberProfile';
 import AdminDashboard from '../pages/AdminDashboard';
 import Agendar from '../pages/Agendar';
 import BarberDashboard from '../pages/BarberDashboard';
+import Scanner from '../pages/Scanner';
 
 export default function AppRouter() {
   return (
@@ -21,6 +22,7 @@ export default function AppRouter() {
         <Route path="/barberos/:id" element={<BarberProfile />} />
         <Route path="/agendar" element={<Agendar />} />
         <Route path="/barbero" element={<BarberDashboard />} />
+        <Route path="/scanner" element={<Scanner />} />
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/servicios" element={<Services />} />
         <Route path="/admin/barberos" element={<Barbers />} />

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { QRCodeSVG } from 'qrcode.react';
 import { useSearchParams } from 'react-router-dom';
 import { auth, db } from '../auth/FirebaseConfig';
 import {
@@ -27,6 +28,7 @@ export default function TurnoForm({ showSteps = false }) {
   const [turnosPorHora, setTurnosPorHora] = useState({});
   const [barberosOcupados, setBarberosOcupados] = useState([]);
   const [exito, setExito] = useState(false);
+  const [qrId, setQrId] = useState('');
 
   const currentStep = !servicio
     ? 1
@@ -147,14 +149,15 @@ export default function TurnoForm({ showSteps = false }) {
       userId,
       timestamp: new Date(),
     };
-    await addDoc(collection(db, 'turnos'), turno);
+    const docRef = await addDoc(collection(db, 'turnos'), turno);
+    setQrId(docRef.id);
     try {
       await fetch(
         'https://hook.us2.make.com/307slkl4v8t4p76yy91sugd5uql87t6d',
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(turno),
+          body: JSON.stringify({ ...turno, id: docRef.id }),
         }
       );
     } catch (err) {
@@ -232,6 +235,11 @@ export default function TurnoForm({ showSteps = false }) {
       {exito && (
         <div role="alert" className="alert alert-success">
           <span>Turno guardado</span>
+        </div>
+      )}
+      {qrId && (
+        <div className="flex justify-center pt-4">
+          <QRCodeSVG value={qrId} />
         </div>
       )}
     </div>
